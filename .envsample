@@ -1,0 +1,5 @@
+#Use this file as a sample for creating your local .env file
+SERVER_HTTP_PORT=1234
+SERVER_PROXY_PATH=/pathinserverproxy
+DB_USER=theuser
+DB_PASSWORD=thepassword

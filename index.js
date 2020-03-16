@@ -21,6 +21,9 @@ router.get("/", (ctx, next) => {
     ctx.body = "Hello world";
 });
 
+//Adding prefix for usage on server
+router.prefix(process.env.SERVER_PROXY_PATH ? process.env.SERVER_PROXY_PATH : "");
+
 app.use(router.routes())
     .use(router.allowedMethods());
 
