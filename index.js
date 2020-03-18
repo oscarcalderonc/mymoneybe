@@ -26,7 +26,7 @@ app.use(logger());
 
 app.use(cors({
   origin(ctx) {
-    return '*';
+    return 'https://oscarcalderon.com/';
   },
 }));
 
