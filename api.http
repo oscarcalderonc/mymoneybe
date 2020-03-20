@@ -1,4 +1,9 @@
-GET localhost:3001/carenalga
+GET localhost:3001/apy/ping
 ###
-POST localhost:3001/carenalga
+POST localhost:3001/apy/ping
+Content-Type: application/json
+
+{
+    "foo": "bar"
+}
 ###

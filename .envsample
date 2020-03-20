@@ -3,3 +3,4 @@ SERVER_HTTP_PORT=1234
 SERVER_PROXY_PATH=/pathinserverproxy
 DB_USER=theuser
 DB_PASSWORD=thepassword
+JWT_SECRET=carenalga
