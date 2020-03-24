@@ -2,7 +2,6 @@ const Koa = require('koa');
 const cors = require('@koa/cors');
 const logger = require('koa-logger');
 const koaBody = require('koa-body');
-const jsonwebtoken = require('jsonwebtoken');
 const koaJwt = require('koa-jwt');
 const router = require('./routes');
 
@@ -26,7 +25,7 @@ app.use(function(ctx, next){
 app.use(logger());
 app.use(koaBody());
 app.use(koaJwt({ secret: JWT_SECRET })
-  .unless({ path: [`${prefix}/public`, `${prefix}/ping`, `${prefix}/getjwt`] }));
+  .unless({ path: [`${prefix}/public`, `${prefix}/ping`, `${prefix}/getjwt`, `${prefix}/login`] }));
 
 app.use(cors({
   // eslint-disable-next-line no-unused-vars
