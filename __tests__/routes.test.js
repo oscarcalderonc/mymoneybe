@@ -13,9 +13,14 @@ afterAll(() => {
 });
 
 describe("basic routes test", () => {
-    test("get home route GET /", async () => {
-       const response = await request(server).get("/");
-       expect(response.status).toEqual(200);
-        expect(response.text).toContain("Hello");
-    });
+  test("get home route GET /ping", async () => {
+    const response = await request(server).get("/ping");
+    expect(response.status).toEqual(200);
+    expect(response.text).toContain("Hello");
+  });
+  test("get home route GET /ping", async () => {
+    const response = await request(server).get("/secreto");
+    expect(response.status).toEqual(401);
+    expect(response.text).toContain("delicioso");
+  });
 });

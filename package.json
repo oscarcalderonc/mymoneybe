@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node -r dotenv/config index.js",
     "test": "jest --setupFiles dotenv/config --watchAll",
-    "debug": "nodemon -r dotenv/config index.js"
+    "debug": "nodemon -r dotenv/config index.js",
+    "debug-changelog": "nodemon -r dotenv/config src/changelog/index.js"
   },
   "keywords": [],
   "author": "Oscar Calderon",
@@ -29,6 +30,7 @@
     "koa-body": "^4.1.1",
     "koa-jwt": "^3.6.0",
     "koa-logger": "^3.2.1",
+    "lodash": "^4.17.15",
     "pg": "^7.18.2"
   }
 }
