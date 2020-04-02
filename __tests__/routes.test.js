@@ -18,9 +18,8 @@ describe("basic routes test", () => {
     expect(response.status).toEqual(200);
     expect(response.text).toContain("Hello");
   });
-  test("get home route GET /ping", async () => {
+  test("get home route GET /secreto", async () => {
     const response = await request(server).get("/secreto");
     expect(response.status).toEqual(401);
-    expect(response.text).toContain("delicioso");
   });
 });
