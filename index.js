@@ -7,7 +7,7 @@ const genHash = async () => {
 
 genHash();
 
-const server = app.listen(process.env.SERVER_HTTP_PORT, () => {
+const server = app.listen(process.env.SERVER_HTTP_PORT || 8080, () => {
   console.log(`Server started in port ${process.env.SERVER_HTTP_PORT}`);
 });
 

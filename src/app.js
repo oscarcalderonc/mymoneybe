@@ -1,18 +1,18 @@
 const Koa = require('koa');
 const cors = require('@koa/cors');
 const logger = require('koa-logger');
-const koaBody = require('koa-body');
+const koaBodyparser = require('koa-bodyparser');
 const koaJwt = require('koa-jwt');
 const router = require('./routes');
 
-const prefix = process.env.SERVER_PROXY_PATH ? process.env.SERVER_PROXY_PATH : '';
+const prefix = process.env.SERVER_PROXY_PATH || '';
 const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'carenalga';
 
 const app = new Koa();
 
-app.use(function(ctx, next){
+app.use((ctx, next) => {
   return next().catch((err) => {
-    if (401 == err.status) {
+    if (err.status === 401) {
       ctx.status = 401;
       console.log(err.message);
       ctx.body = 'Protected resource, use Authorization header to get access\n';
@@ -23,7 +23,7 @@ app.use(function(ctx, next){
 });
 
 app.use(logger());
-app.use(koaBody());
+app.use(koaBodyparser());
 app.use(koaJwt({ secret: JWT_SECRET })
   .unless({ path: [`${prefix}/public`, `${prefix}/ping`, `${prefix}/getjwt`, `${prefix}/login`] }));
 
