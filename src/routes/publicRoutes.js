@@ -16,10 +16,24 @@ module.exports = (router) => {
       throw new Error('Missing/empty username/password');
     }
 
-    const res = await pool.query('SELECT * FROM usr WHERE username = $1', [username]);
-    const userData = res.rows[0];
-    const comparison = await bcrypt.compare(psswrd, userData.password);
-    ctx.body = { ...userData, comparison };
+    // const res = await pool.query('SELECT * FROM usr WHERE username = $1', [username]);
+    // const userData = res.rows[0];
+    const oscar = 'oscar';
+    const prueba123 = '$2b$10$PAndq8XJEJaQXiwiWb50ku9UZ8t4DnFujDXlgGpHV9WdgMUv6pzm6';
+    const passwordMatch = await bcrypt.compare(psswrd, prueba123);
+
+    if(username === oscar && passwordMatch) {
+      const token = jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        // eslint-disable-next-line radix
+        data: { ...ctx.request.body, exp: Math.floor(Date.now() / 1000) + parseInt(JWT_EXPIRE_IN) },
+      }, JWT_SECRET);
+
+      ctx.body = { token };
+    } else {
+      throw new Error('Invalid username & password');
+    }
+
     next();
   });
 
