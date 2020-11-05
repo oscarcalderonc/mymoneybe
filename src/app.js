@@ -6,7 +6,7 @@ const koaJwt = require('koa-jwt');
 const router = require('./routes');
 
 const prefix = process.env.SERVER_PROXY_PATH || '';
-const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'carenalga';
+const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'do_the_delicious_to_her';
 
 const app = new Koa();
 

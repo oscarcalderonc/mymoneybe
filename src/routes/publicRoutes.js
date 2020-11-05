@@ -24,7 +24,7 @@ module.exports = (router) => {
 
     if(username === oscar && passwordMatch) {
       const token = jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        exp: Math.floor(Date.now() / 1000) + JWT_EXPIRE_IN,
         // eslint-disable-next-line radix
         data: { ...ctx.request.body, exp: Math.floor(Date.now() / 1000) + parseInt(JWT_EXPIRE_IN) },
       }, JWT_SECRET);
