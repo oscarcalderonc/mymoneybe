@@ -4,7 +4,7 @@ const app = require('./src/app');
 const genHash = async () => {
   //console.log(`The hash is ${await bcrypt.hash('putyourpasswordhere', 10)}`);
 };
-
+//test
 genHash();
 
 const server = app.listen(process.env.SERVER_HTTP_PORT || 8080, () => {
