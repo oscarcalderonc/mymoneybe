@@ -1,19 +1,10 @@
-const { Pool } = require('pg');
+const admin = require('firebase-admin');
 
-const {
-  DB_USER,
-  DB_PASSWORD,
-  DB_HOST,
-  DB_NAME,
-  DB_PORT,
-} = process.env;
+const connectionConfig = {
+    credential: admin.credential.applicationDefault(),
+    projectId: process.env.GOOGLE_CLOUD_PROJECT || "show-me-my-money-db"
+};
 
-const pool = new Pool({
-  user: DB_USER,
-  host: DB_HOST,
-  database: DB_NAME,
-  password: DB_PASSWORD,
-  port: parseInt(DB_PORT),
-});
+admin.initializeApp(connectionConfig);
 
-module.exports = pool;
+module.exports = admin.firestore();
