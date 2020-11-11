@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <!--script src="ky.min.js"></script -->
+        <script type="module">
+            import ky from 'https://unpkg.com/ky@0.24.0/index.js';
+            const login = async () => {
+                const json = {
+                    username: document.querySelector('#username').value,
+                    psswrd: document.querySelector('#psswrd').value
+                };
+                //https://test-money-g4q6tqkjza-uc.a.run.app
+                const parsed = await ky.post('http://localhost:1234/money/login', {json}).json();
+                document.querySelector('#result').innerHTML = parsed;
+            };
+
+            window.login = login;
+            
+        </script>
+    </head>
+    <body>
+        Username: <input type="text" id="username" /><br />
+        Password: <input type="password" id="psswrd" /><br />
+        <button onclick="login()">Login</button>
+        <span id="result"></span>
+    </body>
+</html>

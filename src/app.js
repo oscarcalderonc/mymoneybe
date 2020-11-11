@@ -30,7 +30,7 @@ app.use(koaJwt({ secret: JWT_SECRET })
 app.use(cors({
     // eslint-disable-next-line no-unused-vars
     origin(ctx) {
-        return 'https://oscarcalderon.com/';
+        return process.env.ALLOWED_ORIGINS;
     },
 }));
 

@@ -25,6 +25,9 @@ module.exports = (router) => {
 
         const matches = await db.collection('users').where('username', '==', username).get();
 
+        if (matches.empty) {
+            throw new Error('Invalid username & password');
+        }
         let userMatch;
         matches.forEach((doc) => {
             userMatch = doc.data();
