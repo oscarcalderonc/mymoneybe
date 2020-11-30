@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'do_the_del
 
 const app = new Koa();
 
-app.use(cors({ origin: 'money-fe-g4q6tqkjza-uc.a.run.app' }));
+app.use(cors({ origin: 'https://money-fe-g4q6tqkjza-uc.a.run.app' }));
 
 app.use(async (ctx, next) => {
     try {
