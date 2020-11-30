@@ -20,7 +20,7 @@ app.use(async (ctx, next) => {
             data: ctx.body,
         };
     } catch (err) {
-        ctx.status = parseInt(err.status);
+        ctx.status = err.status ? parseInt(err.status) : 500;
         ctx.body = {
             message: err.message,
         };
