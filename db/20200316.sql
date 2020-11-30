@@ -844,7 +844,6 @@ INSERT INTO public.tag (tag_id, name) VALUES (58, 'udemy');
 INSERT INTO public.tag (tag_id, name) VALUES (59, 'usedstuff');
 INSERT INTO public.tag (tag_id, name) VALUES (60, 'website');
 INSERT INTO public.tag (tag_id, name) VALUES (61, 'work');
-INSERT INTO public.tag (tag_id, name) VALUES (62, 'mynewtag');
 
 
 --

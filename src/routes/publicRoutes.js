@@ -46,7 +46,7 @@ module.exports = (router) => {
 
             ctx.body = { token };
         } else {
-            throw new Error('Invalid username & password');
+            ctx.throw(401, 'Invalid username & password');
         }
 
         next();

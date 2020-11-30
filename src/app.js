@@ -10,29 +10,27 @@ const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'do_the_del
 
 const app = new Koa();
 
-app.use((ctx, next) => {
-    return next().catch((err) => {
-        if (err.status === 401) {
-            ctx.status = 401;
-            console.log(err.message);
-            ctx.body = 'Protected resource, use Authorization header to get access\n';
-        } else {
-            throw err;
-        }
-    });
+app.use(cors({ origin: 'money-fe-g4q6tqkjza-uc.a.run.app' }));
+
+app.use(async (ctx, next) => {
+    try {
+        await next();
+        ctx.type = 'application/json';
+        ctx.body = {
+            data: ctx.body,
+        };
+    } catch (err) {
+        ctx.status = err.status;
+        ctx.body = {
+            message: err.message,
+        };
+    }
 });
 
 app.use(logger());
 app.use(bodyparser());
 app.use(koaJwt({ secret: JWT_SECRET })
     .unless({ path: [`${ENDPOINT_PREFIX}/public`, `${ENDPOINT_PREFIX}/ping`, `${ENDPOINT_PREFIX}/getjwt`, `${ENDPOINT_PREFIX}/login`] }));
-
-app.use(cors({
-    // eslint-disable-next-line no-unused-vars
-    origin(ctx) {
-        return process.env.ALLOWED_ORIGINS;
-    },
-}));
 
 app.use(router.routes())
     .use(router.allowedMethods());

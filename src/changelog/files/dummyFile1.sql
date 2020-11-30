@@ -1,2 +1,0 @@
-comment on table changelog is 'List of all sql scripts that have been applied to the database';
-comment on table changelog is 'List of all sql scripts that have been applied to the database in a sequential order';
