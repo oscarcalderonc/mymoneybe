@@ -7,7 +7,7 @@ module.exports = (router) => {
     });
 
     router.post('/run', async (ctx, next) => {
-        const { scriptName } = ctx.req.body;
+        const { scriptName } = ctx.request.body;
         const changelog = require(`../changelog/files/${scriptName}.sql`);
         await changelog(db);
         ctx.body = 'Success (I guess)';
