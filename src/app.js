@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'do_the_del
 
 const app = new Koa();
 
-app.use(cors({ origin: 'https://money-fe-g4q6tqkjza-uc.a.run.app' }));
+app.use(cors({ origin: process.env.ALLOWED_ORIGINS })); //'https://money-fe-g4q6tqkjza-uc.a.run.app'
 
 app.use(async (ctx, next) => {
     try {
@@ -32,7 +32,7 @@ app.use(bodyparser());
 app.use(koaJwt({ secret: JWT_SECRET })
     .unless({ path: [`${ENDPOINT_PREFIX}/public`, `${ENDPOINT_PREFIX}/ping`, `${ENDPOINT_PREFIX}/getjwt`, `${ENDPOINT_PREFIX}/login`] }));
 
-app.use(router.routes())
-    .use(router.allowedMethods());
+app.use(router.routes());
+app.use(router.allowedMethods());
 
 module.exports = app;

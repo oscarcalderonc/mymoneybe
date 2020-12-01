@@ -20,7 +20,7 @@ module.exports = async (db) => {
 
     const creditCard = await accountTypes.add({
         cash: false,
-        creditCard: false,
+        creditCard: true,
         loan: false,
         name: 'Credit Card',
         readOnly: true,
