@@ -20,6 +20,7 @@ app.use(async (ctx, next) => {
             data: ctx.body,
         };
     } catch (err) {
+        console.log(err);
         ctx.status = err.status ? parseInt(err.status) : 500;
         ctx.body = {
             message: err.message,

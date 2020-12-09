@@ -18,6 +18,10 @@ module.exports = (router) => {
         //transform datetime
 
         try {
+            if (transactionType.operation !== '=') {
+                delete payload.toAccountId;
+            }
+
             const transactionRef = await db.collection('transactions').add(payload);
             console.log(transactionRef.id);
             const fromAccountRef = await db.collection('accounts').doc(payload.fromAccountId);
