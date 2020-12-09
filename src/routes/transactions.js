@@ -15,7 +15,7 @@ module.exports = (router) => {
         const { transactionType } = payload;
         delete payload.transactionType;
 
-        //transform datetime
+        payload.dateTime = new Date(payload.dateTime);
 
         try {
             if (transactionType.operation !== '=') {
