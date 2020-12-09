@@ -1,9 +1,12 @@
 module.exports = async (db) => {
     const txns = await db.collection('transactions').get();
+    console.log('nouuu');
     txns.docs.forEach(async (txn) => {
         const { dateTime: currentDateTime } = txn.data();
         let newDateTime = currentDateTime;
+        console.log('nouuu');
         if (typeof currentDateTime === 'string') {
+            console.log('siuuu');
             const dt = new Date();
 
             dt.setDate(currentDateTime.substr(6, 2));
