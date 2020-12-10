@@ -9,6 +9,7 @@ const setAccountTypesRoutes = require('./accountTypes');
 const setCategoriesRoutes = require('./categories');
 const setWorkspacesRoutes = require('./workspaces');
 const setTransactionTypesRoutes = require('./transactionTypes');
+const setBanksRoutes = require('./banks');
 const setTransactionRoutes = require('./transactions');
 
 setPublicRoutes(router);
@@ -19,5 +20,6 @@ setCategoriesRoutes(router);
 setTransactionTypesRoutes(router);
 setTransactionRoutes(router);
 setWorkspacesRoutes(router);
+setBanksRoutes(router);
 
 module.exports = router;

@@ -5,7 +5,9 @@ const { mapDocuments } = require('../utils/utils');
 
 module.exports = (router) => {
     router.get('/transactions', async (ctx, next) => {
-        ctx.body = mapDocuments(await db.collection('transactions').get());
+        // TODO Default load current month
+        ctx.body = mapDocuments(await db.collection('transactions')
+            .orderBy('dateTime', 'asc').get());
         next();
     });
 

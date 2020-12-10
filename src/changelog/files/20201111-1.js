@@ -1,4 +1,11 @@
 module.exports = async (db) => {
+
+    const workspaces = db.collection('workspaces');
+
+    await workspaces.add({ name: "Oscar" });
+    await workspaces.add({ name: "Amor" });
+    await workspaces.add({ name: "House", default: true });
+
     const accountTypes = db.collection('accountTypes');
 
     // obj.id to get the id
@@ -41,6 +48,12 @@ module.exports = async (db) => {
     const payoneer = await banks.add({
         name: 'Payoneer',
         acronym: 'PYN',
+    });
+
+    const accounts = db.collection('accounts');
+
+    await accounts.add({
+        name: 'Cash', order: 1, initialBalance: 0, currentBalance: 345, accountTypeId: cash.id,
     });
 
     const categories = db.collection('categories');
