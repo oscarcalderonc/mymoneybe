@@ -16,6 +16,11 @@ module.exports = (router) => {
         next();
     });
 
+    router.get('/authd', async (ctx, next) => {
+        ctx.body = { authorized: true };
+        next();
+    });
+
     router.post('/login', async (ctx, next) => {
         const { username, psswrd: password } = ctx.request.body;
 
