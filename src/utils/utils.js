@@ -12,7 +12,7 @@ module.exports.mapDocuments = (snapshot) => {
 
 module.exports.mapDocument = (snapshot) => {
     if (snapshot && !snapshot.empty) {
-        return { id: snapshot.docs[0].id, ...snapshot.docs[0].data() };
+        return { id: snapshot.id, ...snapshot.data() };
     }
 
     return {};
