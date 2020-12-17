@@ -19,12 +19,10 @@ const calculateNewBalance = ({
         } else {
             amountToApply *= operationsMapping[operation];
         }
+    } else if (operation === '=') {
+        amountToApply *= isDestination ? DECREASE : INCREASE;
     } else {
-        if (operation === '=') {
-            amountToApply *= isDestination ? DECREASE : INCREASE;
-        } else {
-            amountToApply *= operationsReversalMapping[operation];
-        }
+        amountToApply *= operationsReversalMapping[operation];
     }
 
     return parseFloat((currentBalance + amountToApply).toFixed(2));
@@ -49,7 +47,12 @@ module.exports = (router) => {
     router.delete('/transactions/:transactionId', async (ctx, next) => {
         const { transactionId } = ctx.params;
         const transactionRef = db.collection('transactions').doc(transactionId);
-        const { amount, fromAccountId, toAccountId, transactionTypeId } = await (await transactionRef.get()).data();
+        const {
+            amount,
+            fromAccountId,
+            toAccountId,
+            transactionTypeId,
+        } = await (await transactionRef.get()).data();
 
         const transactionType = await (await db.collection('transactionTypes').doc(transactionTypeId).get()).data();
 
@@ -93,52 +96,61 @@ module.exports = (router) => {
 
         payload.dateTime = new Date(payload.dateTime);
 
-        try {
-            const transactionType = await (await db.collection('transactionTypes').doc(payload.transactionTypeId).get()).data();
+        const transactionType = await (await db.collection('transactionTypes').doc(payload.transactionTypeId).get()).data();
 
-            if (transactionType.operation !== '=') {
-                delete payload.toAccountId;
-            }
+        if (transactionType.operation !== '=') {
+            delete payload.toAccountId;
+        }
 
-            await db.runTransaction(async (t) => {
-                const newTransactionRef = db.collection('transactions').doc();
-                const fromAccountRef = db.collection('accounts').doc(payload.fromAccountId);
-                const { currentBalance: currentBalanceFrom } = (await t.get(fromAccountRef)).data();
+        await db.runTransaction(async (t) => {
+            const newTransactionRef = db.collection('transactions').doc();
+            const fromAccountRef = db.collection('accounts').doc(payload.fromAccountId);
+            const { currentBalance: currentBalanceFrom } = (await t.get(fromAccountRef)).data();
 
-                const newBalanceFrom = calculateNewBalance({
+            const newBalanceFrom = calculateNewBalance({
+                amount: payload.amount,
+                isDestination: false,
+                isReversal: false,
+                operation: transactionType.operation,
+                currentBalance: currentBalanceFrom,
+            });
+
+            if (payload.toAccountId) {
+                const toAccountRef = db.collection('accounts').doc(payload.toAccountId);
+                const { currentBalance: currentBalanceTo } = (await t.get(toAccountRef)).data();
+
+                const newBalanceTo = calculateNewBalance({
                     amount: payload.amount,
-                    isDestination: false,
+                    isDestination: true,
                     isReversal: false,
                     operation: transactionType.operation,
-                    currentBalance: currentBalanceFrom,
+                    currentBalance: currentBalanceTo,
                 });
 
-                if (payload.toAccountId) {
-                    const toAccountRef = db.collection('accounts').doc(payload.toAccountId);
-                    const { currentBalance: currentBalanceTo } = (await t.get(toAccountRef)).data();
-
-                    const newBalanceTo = calculateNewBalance({
-                        amount: payload.amount,
-                        isDestination: true,
-                        isReversal: false,
-                        operation: transactionType.operation,
-                        currentBalance: currentBalanceTo,
-                    });
-
-                    t.update(toAccountRef, { currentBalance: newBalanceTo }, { merge: true });
-                }
-                t.update(fromAccountRef, { currentBalance: newBalanceFrom }, { merge: true });
-                await t.set(newTransactionRef, payload);
-            });
-        } catch (err) {
-            console.log(err);
-        }
+                t.update(toAccountRef, { currentBalance: newBalanceTo }, { merge: true });
+            }
+            t.update(fromAccountRef, { currentBalance: newBalanceFrom }, { merge: true });
+            await t.set(newTransactionRef, payload);
+        });
 
         ctx.body = {
             message: 'Success',
         };
         next();
     });
+
+    const hasTransactionDetailsChanged = (oldAmount, newAmount, oldAccountFrom, newAccountFrom, oldAccountTo, newAccountTo, operation) => {
+        let areThereChanges = false;
+
+        areThereChanges = oldAmount !== newAmount ? true : areThereChanges;
+        areThereChanges = oldAccountFrom !== newAccountFrom ? true : areThereChanges;
+
+        if(operation === '=') {
+            areThereChanges = oldAccountTo !== newAccountTo ? true : areThereChanges;
+        }
+            
+        return areThereChanges;
+    };
 
     router.patch('/transactions/:transactionId', async (ctx, next) => {
         const payload = ctx.request.body;
@@ -148,20 +160,21 @@ module.exports = (router) => {
 
         payload.dateTime = new Date(payload.dateTime);
 
-        try {
-            const transactionRef = db.collection('transactions').doc(transactionId);
+        const transactionRef = db.collection('transactions').doc(transactionId);
 
-            const {
-                amount: currentAmount,
-                fromAccountId: currentFromAccountId,
-                toAccountId: currentToAccountId,
-                transactionTypeId,
-            } = (await transactionRef.get()).data();
+        const {
+            amount: currentAmount,
+            fromAccountId: currentFromAccountId,
+            toAccountId: currentToAccountId,
+            transactionTypeId,
+        } = (await transactionRef.get()).data();
 
-            const transactionType = await (await db.collection('transactionTypes').doc(transactionTypeId).get()).data();
+        const transactionType = await (await db.collection('transactionTypes').doc(transactionTypeId).get()).data();
 
 
-            await db.runTransaction(async (t) => {
+        await db.runTransaction(async (t) => {
+
+            if (hasTransactionDetailsChanged(currentAmount, amount, currentFromAccountId, fromAccountId, currentToAccountId, toAccountId, transactionType.operation)) {
                 const currentFromAccountRef = db.collection('accounts').doc(currentFromAccountId);
                 const { currentBalance: oldBalanceFrom } = (await t.get(currentFromAccountRef)).data();
 
@@ -232,15 +245,13 @@ module.exports = (router) => {
                 if (newToAccountRef) {
                     t.update(newToAccountRef, { currentBalance: newBalanceTo }, { merge: true });
                 }
+            }
 
-                await t.set(transactionRef, payload, { merge: true });
-            });
-        } catch (err) {
-            console.log(err);
-        }
+            await t.set(transactionRef, payload, { merge: true });
+        });
 
         ctx.body = {
-            message: 'Success',
+            message: 'Transaction ',
         };
         next();
     });

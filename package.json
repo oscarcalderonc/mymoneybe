@@ -24,6 +24,7 @@
     "@koa/cors": "^3.0.0",
     "@koa/router": "^8.0.8",
     "bcrypt": "^4.0.1",
+    "currency.js": "^2.0.3",
     "dotenv": "^8.2.0",
     "firebase-admin": "^9.3.0",
     "jsonwebtoken": "^8.5.1",
@@ -31,7 +32,10 @@
     "koa-bodyparser": "^4.3.0",
     "koa-jwt": "^3.6.0",
     "koa-logger": "^3.2.1",
-    "lodash": "^4.17.15",
-    "pg": "^7.18.2"
+    "koa-pino-logger": "^3.0.0",
+    "lodash": "^4.17.20",
+    "pg": "^7.18.2",
+    "pino": "^6.8.0",
+    "uuid": "^8.3.2"
   }
 }
