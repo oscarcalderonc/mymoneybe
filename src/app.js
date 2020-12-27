@@ -36,7 +36,7 @@ app.use(async (ctx, next) => {
         ctx.status = err.status ? parseInt(err.status, 10) : 500;
         ctx.body = {
             status: 'error',
-            data: JSON.stringify(err),
+            data: err,
             message: err.customMessage || err.message,
         };
     }
