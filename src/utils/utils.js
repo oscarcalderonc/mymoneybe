@@ -1,6 +1,5 @@
-module.exports.isEmpty = (word) => {
-    return !word || word === null || word === undefined || word.trim() === '';
-};
+
+const { isEmpty, filter, isDate } = require('lodash');
 
 module.exports.mapDocuments = (snapshot) => {
     if (snapshot && !snapshot.empty) {
@@ -16,4 +15,13 @@ module.exports.mapDocument = (snapshot) => {
     }
 
     return {};
+};
+
+module.exports.addToFilter = (query) => (filterValue, filterName, filterCriteria = '==') => {
+
+    if (!isEmpty(filterValue) || isDate(filterValue)) {
+        return query.where(filterName, filterCriteria, filterValue);
+    }
+
+    return query;
 };

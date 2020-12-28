@@ -1,7 +1,9 @@
+
 const { isEmpty } = require('lodash');
+const { DateTime } = require('luxon');
 
 const db = require('../db');
-const { mapDocuments, mapDocument } = require('../utils/utils');
+const { mapDocuments, mapDocument, addToFilter } = require('../utils/utils');
 
 const DECREASE = -1;
 const INCREASE = 1;
@@ -30,9 +32,35 @@ const calculateNewBalance = ({
 
 module.exports = (router) => {
     router.get('/transactions', async (ctx, next) => {
-        // TODO Default load current month
-        ctx.body = mapDocuments(await db.collection('transactions')
-            .orderBy('dateTime', 'asc').get());
+
+        const {
+            month,
+            dateFrom,
+            dateTo,
+            fromAccountId,
+            toAccountId,
+            transactionTypeId,
+        } = ctx.query;
+
+        const defaultDateFrom = DateTime.local().set({ day: 1 }).toJSDate();
+        const defaultDateTo = DateTime.local().set({ day: DateTime.local().daysInMonth }).toJSDate();
+
+        let query = db.collection('transactions');
+
+        const filter = addToFilter(query);
+
+        query = filter(transactionTypeId, 'transactionTypeId');
+        query = filter(toAccountId, 'toAccountId');
+        query = filter(fromAccountId, 'fromAccountId');
+        if (isEmpty(month) || (isEmpty(dateFrom) && isEmpty(dateTo))) {
+            query = filter(defaultDateFrom, 'dateTime', '>=');
+            query = filter(defaultDateTo, 'dateTime', '<=');
+        } else {
+            query = filter(dateFrom, 'dateTime', '>=');
+            query = filter(dateTo, 'dateTime', '<=');
+        }
+
+        ctx.body = mapDocuments(await query.orderBy('dateTime', 'asc').get());
         next();
     });
 
