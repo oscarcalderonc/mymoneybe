@@ -1,6 +1,7 @@
 
 const { isEmpty } = require('lodash');
 const { DateTime } = require('luxon');
+const currency = require('currency.js');
 
 const db = require('../db');
 const { mapDocuments, mapDocument, addToFilter } = require('../utils/utils');
@@ -40,6 +41,7 @@ module.exports = (router) => {
             fromAccountId,
             toAccountId,
             transactionTypeId,
+            amount
         } = ctx.query;
 
         const defaultDateFrom = DateTime.local().set({ day: 1 }).toJSDate();
@@ -58,6 +60,14 @@ module.exports = (router) => {
         } else {
             query = filter(dateFrom, 'dateTime', '>=');
             query = filter(dateTo, 'dateTime', '<=');
+        }
+
+        if (!isEmpty(amount)) {
+            const currencyAmount = currency(amount);
+            const fromAmount = currencyAmount.subtract(currencyAmount.cents());
+            const toAmount = fromAmount.add(0.99);
+            query = filter('amount', fromAmount, '>=');
+            query = filter('amount', toAmount, '<=');
         }
 
         ctx.body = mapDocuments(await query.orderBy('dateTime', 'asc').get());
