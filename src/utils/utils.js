@@ -1,5 +1,5 @@
 
-const { isEmpty, filter, isDate } = require('lodash');
+const { isEmpty, filter, isDate, isNumber } = require('lodash');
 
 module.exports.mapDocuments = (snapshot) => {
     if (snapshot && !snapshot.empty) {
@@ -17,9 +17,8 @@ module.exports.mapDocument = (snapshot) => {
     return {};
 };
 
-module.exports.addToFilter = (query) => (filterValue, filterName, filterCriteria = '==') => {
-
-    if (!isEmpty(filterValue) || isDate(filterValue)) {
+module.exports.addToFilter = (query, filterValue, filterName, filterCriteria = '==') => {
+    if (isNumber(filterValue) || !isEmpty(filterValue) || isDate(filterValue)) {
         return query.where(filterName, filterCriteria, filterValue);
     }
 

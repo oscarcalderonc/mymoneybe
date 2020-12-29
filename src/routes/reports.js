@@ -18,14 +18,13 @@ module.exports = (router) => {
         const defaultDateTo = DateTime.local().set({ day: DateTime.local().daysInMonth }).toJSDate();
 
         let query = db.collection('transactions');
-        const filter = addToFilter(query);
 
         if (isEmpty(month) || (isEmpty(dateFrom) && isEmpty(dateTo))) {
-            query = filter(defaultDateFrom, 'dateTime', '>=');
-            query = filter(defaultDateTo, 'dateTime', '<=');
+            query = addToFilter(query, defaultDateFrom, 'dateTime', '>=');
+            query = addToFilter(query, defaultDateTo, 'dateTime', '<=');
         } else {
-            query = filter(dateFrom, 'dateTime', '>=');
-            query = filter(dateTo, 'dateTime', '<=');
+            query = addToFilter(query, dateFrom, 'dateTime', '>=');
+            query = addToFilter(query, dateTo, 'dateTime', '<=');
         }
 
         const categories = mapDocuments(await db.collection('categories').get());
@@ -33,7 +32,7 @@ module.exports = (router) => {
             .where('operation', '==', '-')
             .where('name', '==', 'Expense')
             .get())[0];
-        query = filter(expenseType.id, 'transactionTypeId', '==');
+        query = addToFilter(query, expenseType.id, 'transactionTypeId', '==');
 
         const rawData = await query.get();
 

@@ -40,6 +40,7 @@ module.exports = (router) => {
             fromAccountId,
             toAccountId,
             transactionTypeId,
+            categoryId,
             amount,
         } = ctx.query;
 
@@ -48,28 +49,28 @@ module.exports = (router) => {
 
         let query = db.collection('transactions');
 
-        const filter = addToFilter(query);
-
-        query = filter(transactionTypeId, 'transactionTypeId');
-        query = filter(toAccountId, 'toAccountId');
-        query = filter(fromAccountId, 'fromAccountId');
+        query = addToFilter(query, transactionTypeId, 'transactionTypeId');
+        query = addToFilter(query, categoryId, 'categoryId');
+        query = addToFilter(query, toAccountId, 'toAccountId');
+        query = addToFilter(query, fromAccountId, 'fromAccountId');
         if (isEmpty(month) || (isEmpty(dateFrom) && isEmpty(dateTo))) {
-            query = filter(defaultDateFrom, 'dateTime', '>=');
-            query = filter(defaultDateTo, 'dateTime', '<=');
+            query = addToFilter(query, defaultDateFrom, 'dateTime', '>=');
+            query = addToFilter(query, defaultDateTo, 'dateTime', '<=');
         } else {
-            query = filter(dateFrom, 'dateTime', '>=');
-            query = filter(dateTo, 'dateTime', '<=');
+            query = addToFilter(query, dateFrom, 'dateTime', '>=');
+            query = addToFilter(query, dateTo, 'dateTime', '<=');
         }
+
+        let documents = mapDocuments(await query.orderBy('dateTime', 'asc').get());
 
         if (!isEmpty(amount)) {
             const currencyAmount = currency(amount);
-            const fromAmount = currencyAmount.subtract(currencyAmount.cents());
-            const toAmount = fromAmount.add(0.99);
-            query = filter('amount', fromAmount, '>=');
-            query = filter('amount', toAmount, '<=');
+            const fromAmount = currencyAmount.subtract(currencyAmount.cents()).value;
+            const toAmount = currency(fromAmount).add(0.99).value;
+            documents = documents.filter((doc) => doc.amount >= fromAmount && doc.amount <= toAmount);
         }
 
-        ctx.body = mapDocuments(await query.orderBy('dateTime', 'asc').get());
+        ctx.body = documents;
         next();
     });
 
