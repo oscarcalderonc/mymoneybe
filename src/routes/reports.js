@@ -29,7 +29,10 @@ module.exports = (router) => {
         }
 
         const categories = mapDocuments(await db.collection('categories').get());
-        const expenseType = mapDocument(await db.collection('transactionTypes').where('operation', '==', '-').get());
+        const expenseType = mapDocuments(await db.collection('transactionTypes')
+            .where('operation', '==', '-')
+            .where('name', '==', 'Expense')
+            .get())[0];
         query = filter(expenseType.id, 'transactionTypeId', '==');
 
         const rawData = await query.get();
