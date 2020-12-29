@@ -33,7 +33,6 @@ const calculateNewBalance = ({
 
 module.exports = (router) => {
     router.get('/transactions', async (ctx, next) => {
-
         const {
             month,
             dateFrom,
@@ -41,7 +40,7 @@ module.exports = (router) => {
             fromAccountId,
             toAccountId,
             transactionTypeId,
-            amount
+            amount,
         } = ctx.query;
 
         const defaultDateFrom = DateTime.local().set({ day: 1 }).toJSDate();

@@ -11,6 +11,7 @@ const setWorkspacesRoutes = require('./workspaces');
 const setTransactionTypesRoutes = require('./transactionTypes');
 const setBanksRoutes = require('./banks');
 const setTransactionRoutes = require('./transactions');
+const setReportsRoutes = require('./reports');
 
 setPublicRoutes(router);
 setPrivateRoutes(router);
@@ -21,5 +22,6 @@ setTransactionTypesRoutes(router);
 setTransactionRoutes(router);
 setWorkspacesRoutes(router);
 setBanksRoutes(router);
+setReportsRoutes(router);
 
 module.exports = router;
