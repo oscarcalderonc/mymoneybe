@@ -44,8 +44,8 @@ module.exports = (router) => {
             amount,
         } = ctx.query;
 
-        const defaultDateFrom = DateTime.local().set({ day: 1 }).set({ hour: 0 }).set({ minute: 0 }).set({ second: 1 }).toJSDate();
-        const defaultDateTo = DateTime.local().set({ day: DateTime.local().daysInMonth }).toJSDate();
+        const defaultDateFrom = DateTime.local().set({ day: 1, hour: 0, minute: 0, second: 1 }).toJSDate();
+        const defaultDateTo = DateTime.local().set({ day: DateTime.local().daysInMonth, hour: 23, minute: 59, second: 59 }).toJSDate();
 
         let query = db.collection('transactions');
 
