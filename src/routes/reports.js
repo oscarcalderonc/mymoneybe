@@ -73,7 +73,7 @@ module.exports = (router) => {
             bankStatement.concat(idx === banks.length - 1 ? ';' : ',');
         });
 
-        ctx.body = { sql: `${bankStatement}` };
+        ctx.body = { sql: `${bankStatement}`, banks };
         next();
     });
 };
