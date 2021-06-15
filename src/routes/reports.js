@@ -66,14 +66,14 @@ module.exports = (router) => {
     router.get('/raw-export', async (ctx, next) => {
 
         const banks = mapDocuments(await db.collection('banks').get());
-        const bankStatement = 'INSERT INTO bank (firebase_id, acronym, name) VALUES ';
+        let bankStatement = 'INSERT INTO bank (firebase_id, acronym, name) VALUES ';
 
         banks.forEach(({ id, acronym, name }, idx) => {
-            bankStatement.concat(`('${id}', '${acronym}', '${name}')`);
-            bankStatement.concat(idx === banks.length - 1 ? ';' : ',');
+            bankStatement = bankStatement.concat(`('${id}', '${acronym}', '${name}')`);
+            bankStatement = bankStatement.concat(idx === banks.length - 1 ? ';' : ',');
         });
 
-        ctx.body = { sql: `${bankStatement}`, banks };
+        ctx.body = { sql: `${bankStatement}` };
         next();
     });
 };
