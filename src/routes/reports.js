@@ -134,7 +134,8 @@ module.exports = (router) => {
         let transactionStatement = 'INSERT INTO transaction (amount, categ_id, date_time, fromacct_id, toacct_id, summary, txntyp_id, wrkspc_id) VALUES ';
 
         transactions.forEach(({ amount, categoryId, dateTime, fromAccountId, toAccountId, summary, transactionTypeId, workspaceId }, idx) => {
-            transactionStatement = transactionStatement.concat(`('${amount}', (SELECT id from category WHERE firebase_id = '${categoryId}'), '${dateTime}', `);
+            const timestamp = DateTime.fromJSDate(dateTime);
+            transactionStatement = transactionStatement.concat(`('${amount}', (SELECT id from category WHERE firebase_id = '${categoryId}'), TO_DATE('${timestamp.toFormat('yyyyLLdd hhmmss')}', 'YYYYMMDD HH24MISS'), `);
             transactionStatement = transactionStatement.concat(`(SELECT id from account WHERE firebase_id = '${fromAccountId}'), `);
             transactionStatement = transactionStatement.concat(!toAccountId ? 'null, ' : `(SELECT id from account WHERE firebase_id = '${toAccountId}'), `);
             transactionStatement = transactionStatement.concat(`'${summary}', (SELECT id from transaction_type WHERE firebase_id = '${transactionTypeId}'), `);
