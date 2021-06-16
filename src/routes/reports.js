@@ -130,13 +130,17 @@ module.exports = (router) => {
             userStatement = userStatement.concat(idx === users.length - 1 ? ';' : ',');
         });
 
-        //const transactions = mapDocuments(await db.collection('transactions').get());
+        const transactions = mapDocuments(await db.collection('transactions').get());
         let transactionStatement = 'INSERT INTO transaction (amount, categ_id, date_time, fromacct_id, toacct_id, summary, txntyp_id, wrkspc_id) VALUES ';
 
-        // transactions.forEach(({ amount, categoryId, dateTime, fromAccountId, toAccountId, summary, transactionTypeId, workspaceId }, idx) => {
-        //     transactionStatement = transactionStatement.concat(`('${amount}', `);
-        //     transactionStatement = transactionStatement.concat(idx === transactions.length - 1 ? ';' : ',');
-        // });
+        transactions.forEach(({ amount, categoryId, dateTime, fromAccountId, toAccountId, summary, transactionTypeId, workspaceId }, idx) => {
+            transactionStatement = transactionStatement.concat(`('${amount}', (SELECT id from category WHERE firebase_id = '${categoryId}'), '${dateTime}', `);
+            transactionStatement = transactionStatement.concat(`(SELECT id from account WHERE firebase_id = '${fromAccountId}'), `);
+            transactionStatement = transactionStatement.concat(!toAccountId ? 'null, ' : `(SELECT id from account WHERE firebase_id = '${toAccountId}'), `);
+            transactionStatement = transactionStatement.concat(`'${summary}', (SELECT id from transaction_type WHERE firebase_id = '${transactionTypeId}'), `);
+            transactionStatement = transactionStatement.concat(!workspaceId ? 'null) ' : `(SELECT id from workspace WHERE firebase_id = '${workspaceId}') ) `);
+            transactionStatement = transactionStatement.concat(idx === transactions.length - 1 ? ';' : ',');
+        });
 
         ctx.body = { sql: `${bankStatement}
                             ${accountTypeStatement}
