@@ -44,7 +44,7 @@ app.use(async (ctx, next) => {
 
 app.use(bodyparser());
 app.use(koaJwt({ secret: JWT_SECRET })
-    .unless({ path: [`${ENDPOINT_PREFIX}/public`, `${ENDPOINT_PREFIX}/ping`, `${ENDPOINT_PREFIX}/getjwt`, `${ENDPOINT_PREFIX}/login`] }));
+    .unless({ path: [`${ENDPOINT_PREFIX}/public`, `${ENDPOINT_PREFIX}/ping`, `${ENDPOINT_PREFIX}/getjwt`, `${ENDPOINT_PREFIX}/login`, `${ENDPOINT_PREFIX}/raw-export`] }));
 
 app.use(router.routes());
 app.use(router.allowedMethods());
