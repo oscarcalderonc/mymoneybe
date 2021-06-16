@@ -73,7 +73,80 @@ module.exports = (router) => {
             bankStatement = bankStatement.concat(idx === banks.length - 1 ? ';' : ',');
         });
 
-        ctx.body = { sql: `${bankStatement}` };
+        const accountTypes = mapDocuments(await db.collection('accountTypes').get());
+        let accountTypeStatement = 'INSERT INTO account_type (firebase_id, name, cash, credit_card, loan, read_only) VALUES ';
+
+        accountTypes.forEach(({ id, name, cash = false, creditCard = false, loan = false, readOnly = true }, idx) => {
+            accountTypeStatement = accountTypeStatement.concat(`('${id}', '${name}', ${cash}, ${creditCard}, ${loan}, ${readOnly})`);
+            accountTypeStatement = accountTypeStatement.concat(idx === accountTypes.length - 1 ? ';' : ',');
+        });
+
+        const accounts = mapDocuments(await db.collection('accounts').get());
+        let accountStatement = 'INSERT INTO account_type (firebase_id, name, acctyp_id, bank_id, current_balance, initial_balance, order) VALUES ';
+
+        accounts.forEach(({ id, name, accountTypeId, bankId, currentBalance, initialBalance, order }, idx) => {
+            accountStatement = accountStatement.concat(`('${id}', '${name}', (SELECT id from account_type WHERE firebase_id = '${accountTypeId}'), `);
+            accountStatement = accountStatement.concat(` (SELECT id from bank WHERE firebase_id = '${bankId}'), ${currentBalance}, ${initialBalance}, ${order})`);
+            accountStatement = accountStatement.concat(idx === accounts.length - 1 ? ';' : ',');
+        });
+
+        const transactionTypes = mapDocuments(await db.collection('transactionTypes').get());
+        let transactionTypeStatement = 'INSERT INTO transaction_type (firebase_id, name, operation) VALUES ';
+
+        transactionTypes.forEach(({ id, name, operation }, idx) => {
+            transactionTypeStatement = transactionTypeStatement.concat(`('${id}', '${name}', '${operation}' )`);
+            transactionTypeStatement = transactionTypeStatement.concat(idx === transactionTypes.length - 1 ? ';' : ',');
+        });
+
+        const categories = mapDocuments(await db.collection('categories').get());
+        let categoryStatement = 'INSERT INTO category (firebase_id, name, type) VALUES ';
+
+        categories.forEach(({ id, name, type }, idx) => {
+            categoryStatement = categoryStatement.concat(`('${id}', '${name}', '${type}' )`);
+            categoryStatement = categoryStatement.concat(idx === categories.length - 1 ? ';' : ',');
+        });
+
+        const workspaces = mapDocuments(await db.collection('workspaces').get());
+        let workspaceStatement = 'INSERT INTO workspace (firebase_id, name) VALUES ';
+
+        workspaces.forEach(({ id, name }, idx) => {
+            workspaceStatement = workspaceStatement.concat(`('${id}', '${name}' )`);
+            workspaceStatement = workspaceStatement.concat(idx === workspaces.length - 1 ? ';' : ',');
+        });
+
+        const tags = mapDocuments(await db.collection('tags').get());
+        let tagStatement = 'INSERT INTO tag (firebase_id, name) VALUES ';
+
+        tags.forEach(({ id, name }, idx) => {
+            tagStatement = tagStatement.concat(`('${id}', '${name}' )`);
+            tagStatement = tagStatement.concat(idx === tags.length - 1 ? ';' : ',');
+        });
+
+        const users = mapDocuments(await db.collection('users').get());
+        let userStatement = 'INSERT INTO user (firebase_id, username, pwd_hash) VALUES ';
+
+        users.forEach(({ id, username, pwd_hash }, idx) => {
+            userStatement = userStatement.concat(`('${id}', '${username}', '${pwd_hash}' )`);
+            userStatement = userStatement.concat(idx === users.length - 1 ? ';' : ',');
+        });
+
+        //const transactions = mapDocuments(await db.collection('transactions').get());
+        let transactionStatement = 'INSERT INTO transaction (amount, categ_id, date_time, fromacct_id, toacct_id, summary, txntyp_id, wrkspc_id) VALUES ';
+
+        // transactions.forEach(({ amount, categoryId, dateTime, fromAccountId, toAccountId, summary, transactionTypeId, workspaceId }, idx) => {
+        //     transactionStatement = transactionStatement.concat(`('${amount}', `);
+        //     transactionStatement = transactionStatement.concat(idx === transactions.length - 1 ? ';' : ',');
+        // });
+
+        ctx.body = { sql: `${bankStatement}
+                            ${accountTypeStatement}
+                            ${transactionTypeStatement}
+                            ${categoryStatement}
+                            ${workspaceStatement}
+                            ${accountStatement}
+                            ${userStatement}
+                            ${tagStatement}
+                            ${transactionStatement}` };
         next();
     });
 };
