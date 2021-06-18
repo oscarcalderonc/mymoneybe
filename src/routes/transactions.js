@@ -47,38 +47,48 @@ module.exports = (router) => {
         const defaultDateFrom = DateTime.local().set({ day: 1, hour: 0, minute: 0, second: 1 }).toJSDate();
         const defaultDateTo = DateTime.local().set({ day: DateTime.local().daysInMonth, hour: 23, minute: 59, second: 59 }).toJSDate();
 
-        let query = db.collection('transactions');
+        let query = ctx.db('transaction').whereRaw('1 = ?', [1]);
 
-        query = addToFilter(query, transactionTypeId, 'transactionTypeId');
-        query = addToFilter(query, categoryId, 'categoryId');
-        query = addToFilter(query, toAccountId, 'toAccountId');
-        query = addToFilter(query, fromAccountId, 'fromAccountId');
-        if (isEmpty(month) || (isEmpty(dateFrom) && isEmpty(dateTo))) {
-            query = addToFilter(query, defaultDateFrom, 'dateTime', '>=');
-            query = addToFilter(query, defaultDateTo, 'dateTime', '<=');
-        } else {
-            query = addToFilter(query, dateFrom, 'dateTime', '>=');
-            query = addToFilter(query, dateTo, 'dateTime', '<=');
+
+        if (transactionTypeId) {
+            query.andWhere('txntyp_id', transactionTypeId);
         }
 
-        let documents = mapDocuments(await query.orderBy('dateTime', 'asc').get());
-
-        if (!isEmpty(amount)) {
-            const currencyAmount = currency(amount);
-            const fromAmount = currencyAmount.subtract(currencyAmount.cents()).value;
-            const toAmount = currency(fromAmount).add(0.99).value;
-            documents = documents.filter((doc) => doc.amount >= fromAmount && doc.amount <= toAmount);
+        if (categoryId) {
+            query.andWhere('categ_id', categoryId);
         }
 
-        ctx.body = documents;
+        if (toAccountId) {
+            query.andWhere('toacct_id', toAccountId);
+        }
+
+        if (fromAccountId) {
+            query.andWhere('fromacct_id', fromAccountId);
+        }
+
+        if (isEmpty(month)) {
+            query.andWhere('date_time', '>=', defaultDateFrom);
+            query.andWhere('date_time', '<=', defaultDateTo);
+        }
+
+        const transactions = await query.orderBy('date_time');
+
+        // if (!isEmpty(amount)) {
+        //     const currencyAmount = currency(amount);
+        //     const fromAmount = currencyAmount.subtract(currencyAmount.cents()).value;
+        //     const toAmount = currency(fromAmount).add(0.99).value;
+        //     documents = documents.filter((doc) => doc.amount >= fromAmount && doc.amount <= toAmount);
+        // }
+
+        ctx.body = transactions;
         next();
     });
 
     router.get('/transactions/:transactionId', async (ctx, next) => {
         const { transactionId } = ctx.params;
-        const transaction = await db.collection('transactions').doc(transactionId).get();
+        const transaction = await ctx.db('transaction').where('id', transactionId).first();
 
-        ctx.body = mapDocument(transaction);
+        ctx.body = transaction;
         next();
     });
 

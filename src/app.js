@@ -13,6 +13,8 @@ const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'do_the_del
 
 const app = new Koa();
 
+app.context.db = require('./db');
+
 app.use(pino);
 app.use(cors({ origin: process.env.ALLOWED_ORIGINS }));
 

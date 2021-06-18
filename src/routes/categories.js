@@ -1,24 +1,15 @@
-const db = require('../db');
-const { mapDocuments, mapDocument } = require('../utils/utils');
 
 module.exports = (router) => {
     router.get('/categories', async (ctx, next) => {
-        //const { categoryType } = ctx.query;
-
-        const query = db.collection('categories');
-
-        // if (!isEmpty(categoryType)) {
-        //     query = query.where('type', '==', categoryType);
-        // }
-        ctx.body = mapDocuments(await query.get());
+        ctx.body = await ctx.db('category');
         next();
     });
 
     router.get('/categories/:categoryId', async (ctx, next) => {
         const { categoryId } = ctx.params;
-        const category = await db.collection('categories').doc(categoryId).get();
 
-        ctx.body = mapDocument(category);
+        const category = await ctx.db('category').where('id', categoryId).first();
+        ctx.body = category;
 
         next();
     });

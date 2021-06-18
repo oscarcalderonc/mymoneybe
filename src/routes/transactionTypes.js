@@ -1,9 +1,7 @@
-const db = require('../db');
-const { mapDocuments } = require('../utils/utils');
 
 module.exports = (router) => {
     router.get('/transactionTypes', async (ctx, next) => {
-        ctx.body = mapDocuments(await db.collection('transactionTypes').get());
+        ctx.body = await ctx.db('transaction_type');
         next();
     });
 };

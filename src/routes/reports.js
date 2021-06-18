@@ -17,28 +17,25 @@ module.exports = (router) => {
         const defaultDateFrom = DateTime.local().set({ day: 1 }).toJSDate();
         const defaultDateTo = DateTime.local().set({ day: DateTime.local().daysInMonth }).toJSDate();
 
-        let query = db.collection('transactions');
+        const query = await ctx.db('transaction').where(1, 1);
 
-        if (isEmpty(month) || (isEmpty(dateFrom) && isEmpty(dateTo))) {
-            query = addToFilter(query, defaultDateFrom, 'dateTime', '>=');
-            query = addToFilter(query, defaultDateTo, 'dateTime', '<=');
-        } else {
-            query = addToFilter(query, dateFrom, 'dateTime', '>=');
-            query = addToFilter(query, dateTo, 'dateTime', '<=');
+        if (isEmpty(month)) {
+            query.andWhere('date_time', '>=', defaultDateFrom);
+            query.andWhere('date_time', '<=', defaultDateTo);
         }
 
-        const categories = mapDocuments(await db.collection('categories').get());
-        const expenseType = mapDocuments(await db.collection('transactionTypes')
-            .where('operation', '==', '-')
-            .where('name', '==', 'Expense')
-            .get())[0];
-        query = addToFilter(query, expenseType.id, 'transactionTypeId', '==');
+        const categories = await ctx.db('category');
+        const expenseType = await ctx.db('transaction_type')
+            .where('operation', '-')
+            .andWhere('name', 'Expense').first();
 
-        const rawData = await query.get();
+        query.andWhere('txntyp_id', expenseType.id);
+
+        const rawData = await query;
 
         const groupedExpenses = new Map();
         rawData.docs.forEach((txn) => {
-            const { amount, categoryId } = txn.data();
+            const { amount, categoryId } = txn;
             const { name: categoryName } = categories.find((cat) => cat.id === categoryId);
 
             if (!groupedExpenses.has(categoryName)) {
@@ -82,7 +79,7 @@ module.exports = (router) => {
         });
 
         const accounts = mapDocuments(await db.collection('accounts').get());
-        let accountStatement = 'INSERT INTO account_type (firebase_id, name, acctyp_id, bank_id, current_balance, initial_balance, order) VALUES ';
+        let accountStatement = 'INSERT INTO account (firebase_id, name, acctyp_id, bank_id, current_balance, initial_balance, list_order) VALUES ';
 
         accounts.forEach(({ id, name, accountTypeId, bankId, currentBalance, initialBalance, order }, idx) => {
             accountStatement = accountStatement.concat(`('${id}', '${name}', (SELECT id from account_type WHERE firebase_id = '${accountTypeId}'), `);

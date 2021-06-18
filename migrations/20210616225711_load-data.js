@@ -1,0 +1,138 @@
+
+exports.up = async (knex) => {
+    await Promise.all([
+
+        knex.schema.raw(`INSERT INTO bank (firebase_id, acronym, name) VALUES 
+        ('6sGFwuYoXp0CTSkxN6gg', 'CITI', 'Banco Cuscatlan'),
+        ('GkrVf2MliGqgdMv6pVUG', 'BA', 'Banco Agricola'),
+        ('vjnoy8axKcwEa6ypYKAX', 'PYN', 'Payoneer')`),
+
+        knex.schema.raw(`INSERT INTO account_type (firebase_id, name, cash, credit_card, loan, read_only) VALUES 
+        ('D4gbleCRmXCWFct0XU1V', 'Savings Account', false, false, false, true),
+        ('IvOzlbtBAdRWwQy93lOs', 'Credit Card', false, true, false, true),
+        ('piauKYootcFf9lw4mJBM', 'Cash', true, false, false, true)`),
+
+        knex.schema.raw(`INSERT INTO transaction_type (firebase_id, name, operation) VALUES 
+        ('6K47DZC0TEIzXSayi53A', 'Own transfer', '=' ),
+        ('fQwTJOiuzoSaAs0pEkGj', 'External transfer', '-' ),
+        ('v23VLuLBkW8Wy86rW0Ii', 'Expense', '-' ),
+        ('v91QweFwf04OI1J9xzlr', 'Income', '+' )`),
+
+        knex.schema.raw(`INSERT INTO category (firebase_id, name, type) VALUES 
+        ('0164IVBQ3ykkHSNfvvgt', 'Pets', '-' ),
+        ('1mIyjQ5i3DHDeLFeFdSg', 'Freelancing', '-' ),
+        ('2HzMfMqgfpbhxS86ghCV', 'Health', '-' ),
+        ('7Xyz0Znb0GrUR4klFyzq', 'Unexpected', '-' ),
+        ('9y9YYIra6xGVSE6C2F19', 'Eat out', '-' ),
+        ('BltOqfA00KpnuRzMEWUy', 'Leisure', '-' ),
+        ('CE1JUt0vDRgRLsUUZjcd', 'Gift', '-' ),
+        ('FnOAn0kUSrCcjIU22LRF', 'Bills and Taxes', '-' ),
+        ('GHCKhDGGdcjnYW42VU7u', 'Give cash', '-' ),
+        ('HscrN26M5gmH8NMGKEKE', 'Loan', '-' ),
+        ('JfXELmwTb6cELXHDgqCr', 'Freelancing (+)', '+' ),
+        ('LpwtOlUhG8seULKuZaAu', 'Gas', '-' ),
+        ('MuSPxlfHjWEWvHSppZ0d', 'Baby stuff', '-' ),
+        ('N0WbIpKPCVatP94HHE9F', 'Tools', '-' ),
+        ('Nsieiu1EUEjBGfcCrOyi', 'Sales', '+' ),
+        ('PHLT6S9mrd2UVmFmbhtB', 'Pay CC', '=' ),
+        ('QOxP79S3Sbpfle302Jmt', 'Education', '-' ),
+        ('SQjqXkH6CoZSzJ0Hl2mp', 'Family', '-' ),
+        ('VIMQdwDhOcFWBMKIhygC', 'Adjustment (-)', '-' ),
+        ('X4QCKUV2EIj8QNp3tC7i', 'Salary', '+' ),
+        ('Xe7dWwR09sygdr6FwRMg', 'Donations', '-' ),
+        ('XytTHMCA5RNl6sIucvmV', 'Get cash', '=' ),
+        ('ZdoJeKJDGFE7TXQt43do', 'Pay back', '=' ),
+        ('j9RL1NZt2NLXQWv9IA3K', 'Transportation', '-' ),
+        ('l59Sk5p2yNU1H2cIo7CH', 'Loan paid back', '+' ),
+        ('mN8ERhmQq5nV2Lssl2Yn', 'Household', '-' ),
+        ('mrLv4cAzW1BMnDzML7X4', 'Adjustment (+)', '+' ),
+        ('o4nZQIG2jweqNKdr5VBN', 'Car repairs', '-' ),
+        ('qoQcBJweJ1pCeqcQGJGw', 'Clothing', '-' ),
+        ('tELQP7ItsEOubyOtWBBR', 'Online Purchases', '-' ),
+        ('tvEk8wwihf4jiBfawQwi', 'Get my money', '=' ),
+        ('ubhGLe119tMzp9xGlVSC', 'Refunds', '+' ),
+        ('zWwSuyBQrmHVKgKguvnF', 'Food', '-' )`),
+
+        knex.schema.raw(`INSERT INTO workspace (firebase_id, name) VALUES 
+        ('KBAr6TN9ZF5RSVloWssX', 'Oscar' ),
+        ('Q5FO7HJ309q7a5iSb9mV', 'Home' ),
+        ('zNt2YI9p4cYgqnya4XGd', 'Amor' )`),
+
+        knex.schema.raw(`INSERT INTO account (firebase_id, name, acctyp_id, bank_id, current_balance, initial_balance, list_order, credit_limit) VALUES 
+        ('1nhwMRrjC7R4gOAeJbdj', 'Cash', (SELECT id from account_type WHERE firebase_id = 'piauKYootcFf9lw4mJBM'),  (SELECT id from bank WHERE firebase_id = 'undefined'), 562.73, 0, 3, null),
+        ('bEF9eqvMpOhlmL0hUiWO', 'House Savings BA', (SELECT id from account_type WHERE firebase_id = 'D4gbleCRmXCWFct0XU1V'),  (SELECT id from bank WHERE firebase_id = 'GkrVf2MliGqgdMv6pVUG'), 9667.36, 0, 2, null),
+        ('kBylW59Y4pEQWBKaqXWZ', 'Savings CITI', (SELECT id from account_type WHERE firebase_id = 'D4gbleCRmXCWFct0XU1V'),  (SELECT id from bank WHERE firebase_id = '6sGFwuYoXp0CTSkxN6gg'), 0.39, 0, 6, null),
+        ('mDSstAH31kMezFCBLwt8', 'Platinum Lifemiles CITI', (SELECT id from account_type WHERE firebase_id = 'IvOzlbtBAdRWwQy93lOs'),  (SELECT id from bank WHERE firebase_id = '6sGFwuYoXp0CTSkxN6gg'), 3978.15, 3900, 5, 3900),
+        ('r3V5VSDmPYjnzRm2frSt', 'Oscar Money BA', (SELECT id from account_type WHERE firebase_id = 'D4gbleCRmXCWFct0XU1V'),  (SELECT id from bank WHERE firebase_id = 'GkrVf2MliGqgdMv6pVUG'), 791.34, 0, 4, null),
+        ('xZQo0cvP0CELQRHTu3pU', 'Platinum Lifemiles BA', (SELECT id from account_type WHERE firebase_id = 'IvOzlbtBAdRWwQy93lOs'),  (SELECT id from bank WHERE firebase_id = 'GkrVf2MliGqgdMv6pVUG'), 3049.25, 3000, 1, 3000)`),
+
+        knex.schema.raw(`INSERT INTO credential (firebase_id, username, pwd_hash) VALUES 
+        ('lsv6wLfwI8WuWTZSyZK0', 'oscar', '$2b$10$PAndq8XJEJaQXiwiWb50ku9UZ8t4DnFujDXlgGpHV9WdgMUv6pzm6' )`),
+
+        knex.schema.raw(`INSERT INTO tag (firebase_id, name) VALUES 
+        ('1tIjyeCWDFOutrT5u8pT', 'sports' ),
+        ('2FO7PK83EzTyo7TbtUDS', 'usedstuff' ),
+        ('4NfV4igzINbhE34Ce4IK', 'work' ),
+        ('5Cd69wCftPYtWIV8tBHU', 'license' ),
+        ('5wkNxtsgthKanMyGgD0e', 'gift' ),
+        ('64VwBfP89nU6nzekotEp', 'bank' ),
+        ('6bhEJ49PiYs52ErDbz2S', 'kindle' ),
+        ('7g5P5MzEpFPmCA1evF2W', 'outsourcing' ),
+        ('8ebNua3xPPMJgiovFASR', 'cellphone' ),
+        ('AoYMB8HQFNAIEcN2ntLp', 'getcash' ),
+        ('AozL7yk5renIwaTku7O0', 'pet' ),
+        ('AvmvGLVmkU7Om9MJBR7B', 'teeth' ),
+        ('BKiZ06n1BIXMgduQwvIx', 'gas' ),
+        ('BoanRgdq4qwhKUaYzqNU', 'mail' ),
+        ('DB1VQwszYiauTeUUXCvJ', 'taxes' ),
+        ('EHLnYmRDHiKFhZ6yI8er', 'running' ),
+        ('Ejahh4JM3fsw6NKRyiPt', 'udemy' ),
+        ('F3xCXsXIwPo6tqhQDrfR', 'shipping' ),
+        ('Gw6NignG7yj6JBOhFGsd', 'car' ),
+        ('HZdaAHzy2HVmi3Ha61zX', 'course' ),
+        ('HcFyUe8tyKmaqlUvbOQy', 'dad' ),
+        ('Iibg5ov5FlClZiFawwr9', 'love' ),
+        ('Iz25kUr9lMEAgnJnpYcg', 'pizzahut' ),
+        ('KoYkQeNRpsHK7bh7K7Yo', 'cashback' ),
+        ('O6VlTHP3ragbsztfsjzE', 'drone' ),
+        ('ONf09pR23FbXnvpxWsB0', 'freelancer' ),
+        ('QN6eYkGAgAXi9HWlxNCy', 'master' ),
+        ('Ra4R1ClIGxThsrrTNykp', 'candies' ),
+        ('SrnLPbUK2nXu4TsninbR', 'massage' ),
+        ('UrSnoBZlKxfVjGlVryXf', 'gearbest' ),
+        ('VD4SY4tq6bf3BOhCd43i', 'website' ),
+        ('Vcsvf2e0GMsWAbgwmd9Q', 'shoes' ),
+        ('Vsbv065zNnH8EjjHmkEr', 'bills' ),
+        ('WvFeQPy4ISTbKvf0SZFL', 'toys' ),
+        ('YQ8S7McDdRwiX4vxgxFy', 'salary' ),
+        ('a6cNTvT2p86GzzKDaySw', 'soccer' ),
+        ('abajvdmpH1t4vu5YiUea', 'articles' ),
+        ('b7SBYm1QMbDvSMG0fkcC', 'groceries' ),
+        ('g9ST8yokI0fLo0i1cv98', 'cine' ),
+        ('gwdb6wvnlpBMex5Up7qO', 'gadget' ),
+        ('hT8T4pMWLaIT5RJBR57H', 'beach' ),
+        ('i6YoJZpjsWD6wzJecQyv', 'townhall' ),
+        ('kz0Cj2CuI8zQNPSURY6q', 'mom' ),
+        ('mNxPj7BzGfT3ZGREY84Q', 'church' ),
+        ('nBTdzfRks06bTTRcosaM', 'diezmo' ),
+        ('oDpPBQ5CXUEbcCYSvin3', 'friends' ),
+        ('pAkcWbtbCNbUewyjgZj7', 'parents' ),
+        ('pMgfFsny6aIe46kIJDRL', 'creditcard' ),
+        ('stFIctPVu31XadYEtW58', 'hosting' ),
+        ('svXrgri801mjPu15za8H', 'coupon' ),
+        ('tU09FfA7JdrIhwU5FJHs', 'pool' ),
+        ('tc5wiFB73P3eTlrUdWrz', 'socks' ),
+        ('vvOQ2tzeNrjVJUuEJNxk', 'clothing' ),
+        ('wIk545Fr5EmJMFxfqTpu', 'games' ),
+        ('wKOVMcP29S7bkRMOp9Ec', 'food' ),
+        ('wXXpZTeNWcxIa4DWnNfC', 'repairs' ),
+        ('wqhUxOkjeMvjMrgmIlTr', 'papajohns' ),
+        ('x3nrnST3cwc1UMouVXyL', 'paycard' ),
+        ('xKsFtnB1nNX1Kgqq35u2', 'flight' ),
+        ('ym7PCLoRr4bQ9FN4g9s5', 'electricity' )`)
+    ]);
+};
+
+exports.down = function(knex) {
+  
+};

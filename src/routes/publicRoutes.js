@@ -28,16 +28,12 @@ module.exports = (router) => {
             throw new Error('Missing/empty username/password');
         }
 
-        const matches = await db.collection('users').where('username', '==', username).get();
+        const matches = await ctx.db('credential').where('username', username);
 
-        if (matches.empty) {
+        if (matches?.length < 1) {
             throw new Error('Invalid username & password');
         }
-        let userMatch;
-        matches.forEach((doc) => {
-            userMatch = doc.data();
-            userMatch.id = doc.id;
-        });
+        let userMatch = matches[0];
 
         const passwordMatch = await bcrypt.compare(password, userMatch.pwd_hash);
 

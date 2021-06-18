@@ -67,15 +67,12 @@ SET default_with_oids = false;
 -- Name: bank; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.bank (
-    name character varying(30) NOT NULL,
-    bank_id integer NOT NULL,
-    acronym character varying(6)
+CREATE TABLE bank (
+    name varchar(30) NOT NULL UNIQUE,
+    id SERIAL PRIMARY KEY,
+    acronym varchar(6)
 )
 WITH (autovacuum_enabled='true');
-
-
-ALTER TABLE public.bank OWNER TO smmmusr;
 
 --
 -- TOC entry 2299 (class 0 OID 0)
@@ -83,7 +80,7 @@ ALTER TABLE public.bank OWNER TO smmmusr;
 -- Name: TABLE bank; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.bank IS 'Banks list to associate to account';
+COMMENT ON TABLE bank IS 'Banks list to associate to account';
 
 
 --
@@ -91,7 +88,7 @@ COMMENT ON TABLE public.bank IS 'Banks list to associate to account';
 -- Name: BANK_bank_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public."BANK_bank_id_seq"
+CREATE SEQUENCE "BANK_bank_id_seq"
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -99,7 +96,7 @@ CREATE SEQUENCE public."BANK_bank_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."BANK_bank_id_seq" OWNER TO smmmusr;
+ALTER TABLE "BANK_bank_id_seq" OWNER TO smmmusr;
 
 --
 -- TOC entry 2300 (class 0 OID 0)
@@ -107,7 +104,7 @@ ALTER TABLE public."BANK_bank_id_seq" OWNER TO smmmusr;
 -- Name: BANK_bank_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public."BANK_bank_id_seq" OWNED BY public.bank.bank_id;
+ALTER SEQUENCE "BANK_bank_id_seq" OWNED BY bank.bank_id;
 
 
 --
@@ -115,14 +112,14 @@ ALTER SEQUENCE public."BANK_bank_id_seq" OWNED BY public.bank.bank_id;
 -- Name: category_icon; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.category_icon (
+CREATE TABLE category_icon (
     catico_id integer NOT NULL,
     icon_name character varying(20) NOT NULL
 )
 WITH (autovacuum_enabled='true');
 
 
-ALTER TABLE public.category_icon OWNER TO smmmusr;
+ALTER TABLE category_icon OWNER TO smmmusr;
 
 --
 -- TOC entry 2301 (class 0 OID 0)
@@ -130,7 +127,7 @@ ALTER TABLE public.category_icon OWNER TO smmmusr;
 -- Name: TABLE category_icon; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.category_icon IS 'Catalog of application icons for categories';
+COMMENT ON TABLE category_icon IS 'Catalog of application icons for categories';
 
 
 --
@@ -138,7 +135,7 @@ COMMENT ON TABLE public.category_icon IS 'Catalog of application icons for categ
 -- Name: CATEGORY_ICON_catico_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public."CATEGORY_ICON_catico_id_seq"
+CREATE SEQUENCE "CATEGORY_ICON_catico_id_seq"
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -146,7 +143,7 @@ CREATE SEQUENCE public."CATEGORY_ICON_catico_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."CATEGORY_ICON_catico_id_seq" OWNER TO smmmusr;
+ALTER TABLE "CATEGORY_ICON_catico_id_seq" OWNER TO smmmusr;
 
 --
 -- TOC entry 2302 (class 0 OID 0)
@@ -154,7 +151,7 @@ ALTER TABLE public."CATEGORY_ICON_catico_id_seq" OWNER TO smmmusr;
 -- Name: CATEGORY_ICON_catico_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public."CATEGORY_ICON_catico_id_seq" OWNED BY public.category_icon.catico_id;
+ALTER SEQUENCE "CATEGORY_ICON_catico_id_seq" OWNED BY category_icon.catico_id;
 
 
 --
@@ -162,7 +159,7 @@ ALTER SEQUENCE public."CATEGORY_ICON_catico_id_seq" OWNED BY public.category_ico
 -- Name: category; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.category (
+CREATE TABLE category (
     cat_id integer NOT NULL,
     name character varying(20) NOT NULL,
     catico_id integer,
@@ -171,7 +168,7 @@ CREATE TABLE public.category (
 WITH (autovacuum_enabled='true');
 
 
-ALTER TABLE public.category OWNER TO smmmusr;
+ALTER TABLE category OWNER TO smmmusr;
 
 --
 -- TOC entry 2303 (class 0 OID 0)
@@ -179,7 +176,7 @@ ALTER TABLE public.category OWNER TO smmmusr;
 -- Name: TABLE category; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.category IS 'Transaction categories';
+COMMENT ON TABLE category IS 'Transaction categories';
 
 
 --
@@ -187,7 +184,7 @@ COMMENT ON TABLE public.category IS 'Transaction categories';
 -- Name: CATEGORY_cat_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public."CATEGORY_cat_id_seq"
+CREATE SEQUENCE "CATEGORY_cat_id_seq"
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -195,7 +192,7 @@ CREATE SEQUENCE public."CATEGORY_cat_id_seq"
     CACHE 1;
 
 
-ALTER TABLE public."CATEGORY_cat_id_seq" OWNER TO smmmusr;
+ALTER TABLE "CATEGORY_cat_id_seq" OWNER TO smmmusr;
 
 --
 -- TOC entry 2304 (class 0 OID 0)
@@ -203,7 +200,7 @@ ALTER TABLE public."CATEGORY_cat_id_seq" OWNER TO smmmusr;
 -- Name: CATEGORY_cat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public."CATEGORY_cat_id_seq" OWNED BY public.category.cat_id;
+ALTER SEQUENCE "CATEGORY_cat_id_seq" OWNED BY category.cat_id;
 
 
 --
@@ -211,7 +208,7 @@ ALTER SEQUENCE public."CATEGORY_cat_id_seq" OWNED BY public.category.cat_id;
 -- Name: account; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.account (
+CREATE TABLE account (
     acct_id integer NOT NULL,
     bank_id integer,
     acctyp_id integer NOT NULL,
@@ -228,7 +225,7 @@ CREATE TABLE public.account (
 );
 
 
-ALTER TABLE public.account OWNER TO smmmusr;
+ALTER TABLE account OWNER TO smmmusr;
 
 --
 -- TOC entry 2305 (class 0 OID 0)
@@ -236,7 +233,7 @@ ALTER TABLE public.account OWNER TO smmmusr;
 -- Name: TABLE account; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.account IS 'List of all user accounts';
+COMMENT ON TABLE account IS 'List of all user accounts';
 
 
 --
@@ -244,7 +241,7 @@ COMMENT ON TABLE public.account IS 'List of all user accounts';
 -- Name: account_acct_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public.account_acct_id_seq
+CREATE SEQUENCE account_acct_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -252,7 +249,7 @@ CREATE SEQUENCE public.account_acct_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.account_acct_id_seq OWNER TO smmmusr;
+ALTER TABLE account_acct_id_seq OWNER TO smmmusr;
 
 --
 -- TOC entry 2306 (class 0 OID 0)
@@ -260,7 +257,7 @@ ALTER TABLE public.account_acct_id_seq OWNER TO smmmusr;
 -- Name: account_acct_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public.account_acct_id_seq OWNED BY public.account.acct_id;
+ALTER SEQUENCE account_acct_id_seq OWNED BY account.acct_id;
 
 
 --
@@ -268,7 +265,7 @@ ALTER SEQUENCE public.account_acct_id_seq OWNED BY public.account.acct_id;
 -- Name: account_type; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.account_type (
+CREATE TABLE account_type (
     acctyp_id integer NOT NULL,
     name character varying(30) NOT NULL,
     is_credit_card smallint DEFAULT 0 NOT NULL,
@@ -279,7 +276,7 @@ CREATE TABLE public.account_type (
 WITH (autovacuum_enabled='true');
 
 
-ALTER TABLE public.account_type OWNER TO smmmusr;
+ALTER TABLE account_type OWNER TO smmmusr;
 
 --
 -- TOC entry 2307 (class 0 OID 0)
@@ -287,7 +284,7 @@ ALTER TABLE public.account_type OWNER TO smmmusr;
 -- Name: TABLE account_type; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.account_type IS 'Catalog of account types';
+COMMENT ON TABLE account_type IS 'Catalog of account types';
 
 
 --
@@ -295,7 +292,7 @@ COMMENT ON TABLE public.account_type IS 'Catalog of account types';
 -- Name: account_type_acctyp_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public.account_type_acctyp_id_seq
+CREATE SEQUENCE account_type_acctyp_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -303,7 +300,7 @@ CREATE SEQUENCE public.account_type_acctyp_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.account_type_acctyp_id_seq OWNER TO smmmusr;
+ALTER TABLE account_type_acctyp_id_seq OWNER TO smmmusr;
 
 --
 -- TOC entry 2308 (class 0 OID 0)
@@ -311,7 +308,7 @@ ALTER TABLE public.account_type_acctyp_id_seq OWNER TO smmmusr;
 -- Name: account_type_acctyp_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public.account_type_acctyp_id_seq OWNED BY public.account_type.acctyp_id;
+ALTER SEQUENCE account_type_acctyp_id_seq OWNED BY account_type.acctyp_id;
 
 
 --
@@ -319,20 +316,20 @@ ALTER SEQUENCE public.account_type_acctyp_id_seq OWNED BY public.account_type.ac
 -- Name: business; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.business (
+CREATE TABLE business (
     name character varying(20),
     bsinss_id integer NOT NULL
 );
 
 
-ALTER TABLE public.business OWNER TO smmmusr;
+ALTER TABLE business OWNER TO smmmusr;
 
 --
 -- TOC entry 207 (class 1259 OID 16424)
 -- Name: business_bsinss_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public.business_bsinss_id_seq
+CREATE SEQUENCE business_bsinss_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -341,7 +338,7 @@ CREATE SEQUENCE public.business_bsinss_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.business_bsinss_id_seq OWNER TO smmmusr;
+ALTER TABLE business_bsinss_id_seq OWNER TO smmmusr;
 
 --
 -- TOC entry 2309 (class 0 OID 0)
@@ -349,7 +346,7 @@ ALTER TABLE public.business_bsinss_id_seq OWNER TO smmmusr;
 -- Name: business_bsinss_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public.business_bsinss_id_seq OWNED BY public.business.bsinss_id;
+ALTER SEQUENCE business_bsinss_id_seq OWNED BY business.bsinss_id;
 
 
 --
@@ -357,7 +354,7 @@ ALTER SEQUENCE public.business_bsinss_id_seq OWNED BY public.business.bsinss_id;
 -- Name: schedule_txn; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.schedule_txn (
+CREATE TABLE schedule_txn (
     schtxn_id integer NOT NULL,
     name character varying(30) NOT NULL,
     start_date timestamp with time zone NOT NULL,
@@ -368,7 +365,7 @@ CREATE TABLE public.schedule_txn (
 );
 
 
-ALTER TABLE public.schedule_txn OWNER TO smmmusr;
+ALTER TABLE schedule_txn OWNER TO smmmusr;
 
 --
 -- TOC entry 2310 (class 0 OID 0)
@@ -376,7 +373,7 @@ ALTER TABLE public.schedule_txn OWNER TO smmmusr;
 -- Name: TABLE schedule_txn; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.schedule_txn IS 'Manages scheduled transactions, for a single time or recurrent';
+COMMENT ON TABLE schedule_txn IS 'Manages scheduled transactions, for a single time or recurrent';
 
 
 --
@@ -384,7 +381,7 @@ COMMENT ON TABLE public.schedule_txn IS 'Manages scheduled transactions, for a s
 -- Name: schedule_txn_schtxn_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public.schedule_txn_schtxn_id_seq
+CREATE SEQUENCE schedule_txn_schtxn_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -392,7 +389,7 @@ CREATE SEQUENCE public.schedule_txn_schtxn_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.schedule_txn_schtxn_id_seq OWNER TO smmmusr;
+ALTER TABLE schedule_txn_schtxn_id_seq OWNER TO smmmusr;
 
 --
 -- TOC entry 2311 (class 0 OID 0)
@@ -400,7 +397,7 @@ ALTER TABLE public.schedule_txn_schtxn_id_seq OWNER TO smmmusr;
 -- Name: schedule_txn_schtxn_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public.schedule_txn_schtxn_id_seq OWNED BY public.schedule_txn.schtxn_id;
+ALTER SEQUENCE schedule_txn_schtxn_id_seq OWNED BY schedule_txn.schtxn_id;
 
 
 --
@@ -408,14 +405,14 @@ ALTER SEQUENCE public.schedule_txn_schtxn_id_seq OWNED BY public.schedule_txn.sc
 -- Name: tag; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.tag (
+CREATE TABLE tag (
     tag_id integer NOT NULL,
     name character varying(20) NOT NULL
 )
 WITH (autovacuum_enabled='true');
 
 
-ALTER TABLE public.tag OWNER TO smmmusr;
+ALTER TABLE tag OWNER TO smmmusr;
 
 --
 -- TOC entry 2312 (class 0 OID 0)
@@ -423,7 +420,7 @@ ALTER TABLE public.tag OWNER TO smmmusr;
 -- Name: TABLE tag; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.tag IS 'Tags used to tag transactions';
+COMMENT ON TABLE tag IS 'Tags used to tag transactions';
 
 
 --
@@ -431,7 +428,7 @@ COMMENT ON TABLE public.tag IS 'Tags used to tag transactions';
 -- Name: tag_tag_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public.tag_tag_id_seq
+CREATE SEQUENCE tag_tag_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -439,7 +436,7 @@ CREATE SEQUENCE public.tag_tag_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.tag_tag_id_seq OWNER TO smmmusr;
+ALTER TABLE tag_tag_id_seq OWNER TO smmmusr;
 
 --
 -- TOC entry 2313 (class 0 OID 0)
@@ -447,7 +444,7 @@ ALTER TABLE public.tag_tag_id_seq OWNER TO smmmusr;
 -- Name: tag_tag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public.tag_tag_id_seq OWNED BY public.tag.tag_id;
+ALTER SEQUENCE tag_tag_id_seq OWNED BY tag.tag_id;
 
 
 --
@@ -455,7 +452,7 @@ ALTER SEQUENCE public.tag_tag_id_seq OWNED BY public.tag.tag_id;
 -- Name: transaction; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.transaction (
+CREATE TABLE transaction (
     txn_id integer NOT NULL,
     txntyp_id integer NOT NULL,
     cat_id integer NOT NULL,
@@ -470,7 +467,7 @@ CREATE TABLE public.transaction (
 );
 
 
-ALTER TABLE public.transaction OWNER TO smmmusr;
+ALTER TABLE transaction OWNER TO smmmusr;
 
 --
 -- TOC entry 2314 (class 0 OID 0)
@@ -478,7 +475,7 @@ ALTER TABLE public.transaction OWNER TO smmmusr;
 -- Name: TABLE transaction; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.transaction IS 'List of all transactions generated';
+COMMENT ON TABLE transaction IS 'List of all transactions generated';
 
 
 --
@@ -486,14 +483,14 @@ COMMENT ON TABLE public.transaction IS 'List of all transactions generated';
 -- Name: transaction_tag; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.transaction_tag (
+CREATE TABLE transaction_tag (
     txntag_id integer NOT NULL,
     txn_id integer NOT NULL,
     tag_name character varying(20) NOT NULL
 );
 
 
-ALTER TABLE public.transaction_tag OWNER TO smmmusr;
+ALTER TABLE transaction_tag OWNER TO smmmusr;
 
 --
 -- TOC entry 2315 (class 0 OID 0)
@@ -501,7 +498,7 @@ ALTER TABLE public.transaction_tag OWNER TO smmmusr;
 -- Name: TABLE transaction_tag; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.transaction_tag IS 'Tags associated with a transaction';
+COMMENT ON TABLE transaction_tag IS 'Tags associated with a transaction';
 
 
 --
@@ -509,7 +506,7 @@ COMMENT ON TABLE public.transaction_tag IS 'Tags associated with a transaction';
 -- Name: transaction_tag_txntag_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public.transaction_tag_txntag_id_seq
+CREATE SEQUENCE transaction_tag_txntag_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -517,7 +514,7 @@ CREATE SEQUENCE public.transaction_tag_txntag_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.transaction_tag_txntag_id_seq OWNER TO smmmusr;
+ALTER TABLE transaction_tag_txntag_id_seq OWNER TO smmmusr;
 
 --
 -- TOC entry 2316 (class 0 OID 0)
@@ -525,7 +522,7 @@ ALTER TABLE public.transaction_tag_txntag_id_seq OWNER TO smmmusr;
 -- Name: transaction_tag_txntag_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public.transaction_tag_txntag_id_seq OWNED BY public.transaction_tag.txntag_id;
+ALTER SEQUENCE transaction_tag_txntag_id_seq OWNED BY transaction_tag.txntag_id;
 
 
 --
@@ -533,7 +530,7 @@ ALTER SEQUENCE public.transaction_tag_txntag_id_seq OWNED BY public.transaction_
 -- Name: transaction_txn_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public.transaction_txn_id_seq
+CREATE SEQUENCE transaction_txn_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -541,7 +538,7 @@ CREATE SEQUENCE public.transaction_txn_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.transaction_txn_id_seq OWNER TO smmmusr;
+ALTER TABLE transaction_txn_id_seq OWNER TO smmmusr;
 
 --
 -- TOC entry 2317 (class 0 OID 0)
@@ -549,7 +546,7 @@ ALTER TABLE public.transaction_txn_id_seq OWNER TO smmmusr;
 -- Name: transaction_txn_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public.transaction_txn_id_seq OWNED BY public.transaction.txn_id;
+ALTER SEQUENCE transaction_txn_id_seq OWNED BY transaction.txn_id;
 
 
 --
@@ -557,7 +554,7 @@ ALTER SEQUENCE public.transaction_txn_id_seq OWNED BY public.transaction.txn_id;
 -- Name: transaction_type; Type: TABLE; Schema: public; Owner: smmmusr
 --
 
-CREATE TABLE public.transaction_type (
+CREATE TABLE transaction_type (
     txntyp_id integer NOT NULL,
     name character varying(20) NOT NULL,
     operation character varying(1) NOT NULL
@@ -565,7 +562,7 @@ CREATE TABLE public.transaction_type (
 WITH (autovacuum_enabled='true');
 
 
-ALTER TABLE public.transaction_type OWNER TO smmmusr;
+ALTER TABLE transaction_type OWNER TO smmmusr;
 
 --
 -- TOC entry 2318 (class 0 OID 0)
@@ -573,7 +570,7 @@ ALTER TABLE public.transaction_type OWNER TO smmmusr;
 -- Name: TABLE transaction_type; Type: COMMENT; Schema: public; Owner: smmmusr
 --
 
-COMMENT ON TABLE public.transaction_type IS 'Type of operations that alter an account';
+COMMENT ON TABLE transaction_type IS 'Type of operations that alter an account';
 
 
 --
@@ -581,7 +578,7 @@ COMMENT ON TABLE public.transaction_type IS 'Type of operations that alter an ac
 -- Name: transaction_type_txntyp_id_seq; Type: SEQUENCE; Schema: public; Owner: smmmusr
 --
 
-CREATE SEQUENCE public.transaction_type_txntyp_id_seq
+CREATE SEQUENCE transaction_type_txntyp_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -589,7 +586,7 @@ CREATE SEQUENCE public.transaction_type_txntyp_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.transaction_type_txntyp_id_seq OWNER TO smmmusr;
+ALTER TABLE transaction_type_txntyp_id_seq OWNER TO smmmusr;
 
 --
 -- TOC entry 2319 (class 0 OID 0)
@@ -597,7 +594,7 @@ ALTER TABLE public.transaction_type_txntyp_id_seq OWNER TO smmmusr;
 -- Name: transaction_type_txntyp_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smmmusr
 --
 
-ALTER SEQUENCE public.transaction_type_txntyp_id_seq OWNED BY public.transaction_type.txntyp_id;
+ALTER SEQUENCE transaction_type_txntyp_id_seq OWNED BY transaction_type.txntyp_id;
 
 
 --
@@ -605,7 +602,7 @@ ALTER SEQUENCE public.transaction_type_txntyp_id_seq OWNED BY public.transaction
 -- Name: account acct_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.account ALTER COLUMN acct_id SET DEFAULT nextval('public.account_acct_id_seq'::regclass);
+ALTER TABLE ONLY account ALTER COLUMN acct_id SET DEFAULT nextval('account_acct_id_seq'::regclass);
 
 
 --
@@ -613,7 +610,7 @@ ALTER TABLE ONLY public.account ALTER COLUMN acct_id SET DEFAULT nextval('public
 -- Name: account_type acctyp_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.account_type ALTER COLUMN acctyp_id SET DEFAULT nextval('public.account_type_acctyp_id_seq'::regclass);
+ALTER TABLE ONLY account_type ALTER COLUMN acctyp_id SET DEFAULT nextval('account_type_acctyp_id_seq'::regclass);
 
 
 --
@@ -621,7 +618,7 @@ ALTER TABLE ONLY public.account_type ALTER COLUMN acctyp_id SET DEFAULT nextval(
 -- Name: bank bank_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.bank ALTER COLUMN bank_id SET DEFAULT nextval('public."BANK_bank_id_seq"'::regclass);
+ALTER TABLE ONLY bank ALTER COLUMN bank_id SET DEFAULT nextval('"BANK_bank_id_seq"'::regclass);
 
 
 --
@@ -629,7 +626,7 @@ ALTER TABLE ONLY public.bank ALTER COLUMN bank_id SET DEFAULT nextval('public."B
 -- Name: business bsinss_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.business ALTER COLUMN bsinss_id SET DEFAULT nextval('public.business_bsinss_id_seq'::regclass);
+ALTER TABLE ONLY business ALTER COLUMN bsinss_id SET DEFAULT nextval('business_bsinss_id_seq'::regclass);
 
 
 --
@@ -637,7 +634,7 @@ ALTER TABLE ONLY public.business ALTER COLUMN bsinss_id SET DEFAULT nextval('pub
 -- Name: category cat_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.category ALTER COLUMN cat_id SET DEFAULT nextval('public."CATEGORY_cat_id_seq"'::regclass);
+ALTER TABLE ONLY category ALTER COLUMN cat_id SET DEFAULT nextval('"CATEGORY_cat_id_seq"'::regclass);
 
 
 --
@@ -645,7 +642,7 @@ ALTER TABLE ONLY public.category ALTER COLUMN cat_id SET DEFAULT nextval('public
 -- Name: category_icon catico_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.category_icon ALTER COLUMN catico_id SET DEFAULT nextval('public."CATEGORY_ICON_catico_id_seq"'::regclass);
+ALTER TABLE ONLY category_icon ALTER COLUMN catico_id SET DEFAULT nextval('"CATEGORY_ICON_catico_id_seq"'::regclass);
 
 
 --
@@ -653,7 +650,7 @@ ALTER TABLE ONLY public.category_icon ALTER COLUMN catico_id SET DEFAULT nextval
 -- Name: schedule_txn schtxn_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.schedule_txn ALTER COLUMN schtxn_id SET DEFAULT nextval('public.schedule_txn_schtxn_id_seq'::regclass);
+ALTER TABLE ONLY schedule_txn ALTER COLUMN schtxn_id SET DEFAULT nextval('schedule_txn_schtxn_id_seq'::regclass);
 
 
 --
@@ -661,7 +658,7 @@ ALTER TABLE ONLY public.schedule_txn ALTER COLUMN schtxn_id SET DEFAULT nextval(
 -- Name: tag tag_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.tag ALTER COLUMN tag_id SET DEFAULT nextval('public.tag_tag_id_seq'::regclass);
+ALTER TABLE ONLY tag ALTER COLUMN tag_id SET DEFAULT nextval('tag_tag_id_seq'::regclass);
 
 
 --
@@ -669,7 +666,7 @@ ALTER TABLE ONLY public.tag ALTER COLUMN tag_id SET DEFAULT nextval('public.tag_
 -- Name: transaction txn_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction ALTER COLUMN txn_id SET DEFAULT nextval('public.transaction_txn_id_seq'::regclass);
+ALTER TABLE ONLY transaction ALTER COLUMN txn_id SET DEFAULT nextval('transaction_txn_id_seq'::regclass);
 
 
 --
@@ -677,7 +674,7 @@ ALTER TABLE ONLY public.transaction ALTER COLUMN txn_id SET DEFAULT nextval('pub
 -- Name: transaction_tag txntag_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction_tag ALTER COLUMN txntag_id SET DEFAULT nextval('public.transaction_tag_txntag_id_seq'::regclass);
+ALTER TABLE ONLY transaction_tag ALTER COLUMN txntag_id SET DEFAULT nextval('transaction_tag_txntag_id_seq'::regclass);
 
 
 --
@@ -685,7 +682,7 @@ ALTER TABLE ONLY public.transaction_tag ALTER COLUMN txntag_id SET DEFAULT nextv
 -- Name: transaction_type txntyp_id; Type: DEFAULT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction_type ALTER COLUMN txntyp_id SET DEFAULT nextval('public.transaction_type_txntyp_id_seq'::regclass);
+ALTER TABLE ONLY transaction_type ALTER COLUMN txntyp_id SET DEFAULT nextval('transaction_type_txntyp_id_seq'::regclass);
 
 
 --
@@ -694,12 +691,12 @@ ALTER TABLE ONLY public.transaction_type ALTER COLUMN txntyp_id SET DEFAULT next
 -- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: smmmusr
 --
 
-INSERT INTO public.account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (8, 2, 1, '$0.00', '2016-12-12 02:00:00-06', '$0.00', 1, 4, NULL, NULL, 0, 'Ahorro CITI', '$0.00');
-INSERT INTO public.account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (9, 5, 1, '$0.00', '2016-12-12 02:00:00-06', '$0.00', 1, 5, NULL, NULL, 0, 'Payoneer Debit', '$0.00');
-INSERT INTO public.account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (2, 1, 1, '$0.00', '2016-12-12 02:00:00-06', '($606.00)', 1, 1, NULL, NULL, 0, 'Ahorro BA', '$0.00');
-INSERT INTO public.account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (5, 1, 2, '$0.00', '2016-12-12 02:00:00-06', '$296.00', 1, 2, 2000.00, NULL, 1, 'Platinum LM BA', '$0.00');
-INSERT INTO public.account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (7, 2, 2, '$0.00', '2016-12-12 02:00:00-06', '($371.03)', 1, 3, 3000.00, NULL, 1, 'Platinum LM CITI', '$0.00');
-INSERT INTO public.account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (11, 2, 2, '$3,450.00', '2018-11-08 06:41:25.510583-06', '$0.00', 0, 99, NULL, NULL, 0, 'Ahorro DUMMY 2', NULL);
+INSERT INTO account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (8, 2, 1, '$0.00', '2016-12-12 02:00:00-06', '$0.00', 1, 4, NULL, NULL, 0, 'Ahorro CITI', '$0.00');
+INSERT INTO account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (9, 5, 1, '$0.00', '2016-12-12 02:00:00-06', '$0.00', 1, 5, NULL, NULL, 0, 'Payoneer Debit', '$0.00');
+INSERT INTO account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (2, 1, 1, '$0.00', '2016-12-12 02:00:00-06', '($606.00)', 1, 1, NULL, NULL, 0, 'Ahorro BA', '$0.00');
+INSERT INTO account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (5, 1, 2, '$0.00', '2016-12-12 02:00:00-06', '$296.00', 1, 2, 2000.00, NULL, 1, 'Platinum LM BA', '$0.00');
+INSERT INTO account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (7, 2, 2, '$0.00', '2016-12-12 02:00:00-06', '($371.03)', 1, 3, 3000.00, NULL, 1, 'Platinum LM CITI', '$0.00');
+INSERT INTO account (acct_id, bank_id, acctyp_id, initial_balance, initial_balance_date, current_balance, show_in_reports, list_order, credit_limit, loan_amount, block_on_overdraft, name, overdraft_limit) VALUES (11, 2, 2, '$3,450.00', '2018-11-08 06:41:25.510583-06', '$0.00', 0, 99, NULL, NULL, 0, 'Ahorro DUMMY 2', NULL);
 
 
 --
@@ -708,10 +705,10 @@ INSERT INTO public.account (acct_id, bank_id, acctyp_id, initial_balance, initia
 -- Data for Name: account_type; Type: TABLE DATA; Schema: public; Owner: smmmusr
 --
 
-INSERT INTO public.account_type (acctyp_id, name, is_credit_card, is_cash, is_loan, is_readonly) VALUES (2, 'Credit card', 1, 0, 0, 0);
-INSERT INTO public.account_type (acctyp_id, name, is_credit_card, is_cash, is_loan, is_readonly) VALUES (3, 'Loan', 0, 0, 1, 0);
-INSERT INTO public.account_type (acctyp_id, name, is_credit_card, is_cash, is_loan, is_readonly) VALUES (4, 'Cash', 0, 1, 0, 0);
-INSERT INTO public.account_type (acctyp_id, name, is_credit_card, is_cash, is_loan, is_readonly) VALUES (1, 'Savings account', 0, 0, 0, 0);
+INSERT INTO account_type (acctyp_id, name, is_credit_card, is_cash, is_loan, is_readonly) VALUES (2, 'Credit card', 1, 0, 0, 0);
+INSERT INTO account_type (acctyp_id, name, is_credit_card, is_cash, is_loan, is_readonly) VALUES (3, 'Loan', 0, 0, 1, 0);
+INSERT INTO account_type (acctyp_id, name, is_credit_card, is_cash, is_loan, is_readonly) VALUES (4, 'Cash', 0, 1, 0, 0);
+INSERT INTO account_type (acctyp_id, name, is_credit_card, is_cash, is_loan, is_readonly) VALUES (1, 'Savings account', 0, 0, 0, 0);
 
 
 --
@@ -720,12 +717,12 @@ INSERT INTO public.account_type (acctyp_id, name, is_credit_card, is_cash, is_lo
 -- Data for Name: bank; Type: TABLE DATA; Schema: public; Owner: smmmusr
 --
 
-INSERT INTO public.bank (name, bank_id, acronym) VALUES ('Banco Agricola', 1, 'BA');
-INSERT INTO public.bank (name, bank_id, acronym) VALUES ('CITI', 2, 'CITI');
-INSERT INTO public.bank (name, bank_id, acronym) VALUES ('Banco de America Central', 3, 'BAC');
-INSERT INTO public.bank (name, bank_id, acronym) VALUES ('HSBC', 4, 'HSBC');
-INSERT INTO public.bank (name, bank_id, acronym) VALUES ('Payoneer', 5, 'PYN');
-INSERT INTO public.bank (name, bank_id, acronym) VALUES ('Skrill', 6, 'SKR');
+INSERT INTO bank (name, bank_id, acronym) VALUES ('Banco Agricola', 1, 'BA');
+INSERT INTO bank (name, bank_id, acronym) VALUES ('CITI', 2, 'CITI');
+INSERT INTO bank (name, bank_id, acronym) VALUES ('Banco de America Central', 3, 'BAC');
+INSERT INTO bank (name, bank_id, acronym) VALUES ('HSBC', 4, 'HSBC');
+INSERT INTO bank (name, bank_id, acronym) VALUES ('Payoneer', 5, 'PYN');
+INSERT INTO bank (name, bank_id, acronym) VALUES ('Skrill', 6, 'SKR');
 
 
 --
@@ -742,23 +739,23 @@ INSERT INTO public.bank (name, bank_id, acronym) VALUES ('Skrill', 6, 'SKR');
 -- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: smmmusr
 --
 
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (1, 'Adjustement', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (2, 'Bills and Taxes', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (3, 'Clothing', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (4, 'Donations', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (5, 'Education', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (6, 'Family', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (7, 'Food', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (8, 'Freelancing', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (9, 'Tools', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (10, 'Health', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (11, 'Household', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (12, 'Leisure', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (13, 'Loan', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (16, 'Transportation', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (17, 'Unexpected', NULL, '-');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (14, 'Salary', NULL, '+');
-INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (15, 'Sales', NULL, '+');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (1, 'Adjustement', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (2, 'Bills and Taxes', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (3, 'Clothing', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (4, 'Donations', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (5, 'Education', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (6, 'Family', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (7, 'Food', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (8, 'Freelancing', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (9, 'Tools', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (10, 'Health', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (11, 'Household', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (12, 'Leisure', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (13, 'Loan', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (16, 'Transportation', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (17, 'Unexpected', NULL, '-');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (14, 'Salary', NULL, '+');
+INSERT INTO category (cat_id, name, catico_id, type) VALUES (15, 'Sales', NULL, '+');
 
 
 --
@@ -783,67 +780,67 @@ INSERT INTO public.category (cat_id, name, catico_id, type) VALUES (15, 'Sales',
 -- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: smmmusr
 --
 
-INSERT INTO public.tag (tag_id, name) VALUES (1, 'dad');
-INSERT INTO public.tag (tag_id, name) VALUES (2, 'mom');
-INSERT INTO public.tag (tag_id, name) VALUES (3, 'bills');
-INSERT INTO public.tag (tag_id, name) VALUES (4, 'taxes');
-INSERT INTO public.tag (tag_id, name) VALUES (5, 'adjustement');
-INSERT INTO public.tag (tag_id, name) VALUES (6, 'articles');
-INSERT INTO public.tag (tag_id, name) VALUES (7, 'bank');
-INSERT INTO public.tag (tag_id, name) VALUES (8, 'beach');
-INSERT INTO public.tag (tag_id, name) VALUES (9, 'candies');
-INSERT INTO public.tag (tag_id, name) VALUES (10, 'car');
-INSERT INTO public.tag (tag_id, name) VALUES (11, 'cashback');
-INSERT INTO public.tag (tag_id, name) VALUES (12, 'cellphone');
-INSERT INTO public.tag (tag_id, name) VALUES (13, 'church');
-INSERT INTO public.tag (tag_id, name) VALUES (14, 'cine');
-INSERT INTO public.tag (tag_id, name) VALUES (15, 'clothing');
-INSERT INTO public.tag (tag_id, name) VALUES (16, 'coupon');
-INSERT INTO public.tag (tag_id, name) VALUES (17, 'course');
-INSERT INTO public.tag (tag_id, name) VALUES (18, 'creditcard');
-INSERT INTO public.tag (tag_id, name) VALUES (19, 'diezmo');
-INSERT INTO public.tag (tag_id, name) VALUES (20, 'drone');
-INSERT INTO public.tag (tag_id, name) VALUES (21, 'electricity');
-INSERT INTO public.tag (tag_id, name) VALUES (22, 'flight');
-INSERT INTO public.tag (tag_id, name) VALUES (23, 'food');
-INSERT INTO public.tag (tag_id, name) VALUES (24, 'freelancer');
-INSERT INTO public.tag (tag_id, name) VALUES (25, 'friends');
-INSERT INTO public.tag (tag_id, name) VALUES (26, 'gadget');
-INSERT INTO public.tag (tag_id, name) VALUES (27, 'games');
-INSERT INTO public.tag (tag_id, name) VALUES (28, 'gas');
-INSERT INTO public.tag (tag_id, name) VALUES (29, 'gearbest');
-INSERT INTO public.tag (tag_id, name) VALUES (30, 'getcash');
-INSERT INTO public.tag (tag_id, name) VALUES (31, 'gift');
-INSERT INTO public.tag (tag_id, name) VALUES (32, 'groceries');
-INSERT INTO public.tag (tag_id, name) VALUES (33, 'hosting');
-INSERT INTO public.tag (tag_id, name) VALUES (34, 'kindle');
-INSERT INTO public.tag (tag_id, name) VALUES (35, 'license');
-INSERT INTO public.tag (tag_id, name) VALUES (36, 'love');
-INSERT INTO public.tag (tag_id, name) VALUES (37, 'mail');
-INSERT INTO public.tag (tag_id, name) VALUES (38, 'massage');
-INSERT INTO public.tag (tag_id, name) VALUES (39, 'master');
-INSERT INTO public.tag (tag_id, name) VALUES (40, 'outsourcing');
-INSERT INTO public.tag (tag_id, name) VALUES (41, 'papajohns');
-INSERT INTO public.tag (tag_id, name) VALUES (42, 'parents');
-INSERT INTO public.tag (tag_id, name) VALUES (43, 'paycard');
-INSERT INTO public.tag (tag_id, name) VALUES (44, 'pet');
-INSERT INTO public.tag (tag_id, name) VALUES (45, 'pizzahut');
-INSERT INTO public.tag (tag_id, name) VALUES (46, 'pool');
-INSERT INTO public.tag (tag_id, name) VALUES (47, 'repairs');
-INSERT INTO public.tag (tag_id, name) VALUES (48, 'running');
-INSERT INTO public.tag (tag_id, name) VALUES (49, 'salary');
-INSERT INTO public.tag (tag_id, name) VALUES (50, 'shipping');
-INSERT INTO public.tag (tag_id, name) VALUES (51, 'shoes');
-INSERT INTO public.tag (tag_id, name) VALUES (52, 'soccer');
-INSERT INTO public.tag (tag_id, name) VALUES (53, 'socks');
-INSERT INTO public.tag (tag_id, name) VALUES (54, 'sports');
-INSERT INTO public.tag (tag_id, name) VALUES (55, 'teeth');
-INSERT INTO public.tag (tag_id, name) VALUES (56, 'townhall');
-INSERT INTO public.tag (tag_id, name) VALUES (57, 'toys');
-INSERT INTO public.tag (tag_id, name) VALUES (58, 'udemy');
-INSERT INTO public.tag (tag_id, name) VALUES (59, 'usedstuff');
-INSERT INTO public.tag (tag_id, name) VALUES (60, 'website');
-INSERT INTO public.tag (tag_id, name) VALUES (61, 'work');
+INSERT INTO tag (tag_id, name) VALUES (1, 'dad');
+INSERT INTO tag (tag_id, name) VALUES (2, 'mom');
+INSERT INTO tag (tag_id, name) VALUES (3, 'bills');
+INSERT INTO tag (tag_id, name) VALUES (4, 'taxes');
+INSERT INTO tag (tag_id, name) VALUES (5, 'adjustement');
+INSERT INTO tag (tag_id, name) VALUES (6, 'articles');
+INSERT INTO tag (tag_id, name) VALUES (7, 'bank');
+INSERT INTO tag (tag_id, name) VALUES (8, 'beach');
+INSERT INTO tag (tag_id, name) VALUES (9, 'candies');
+INSERT INTO tag (tag_id, name) VALUES (10, 'car');
+INSERT INTO tag (tag_id, name) VALUES (11, 'cashback');
+INSERT INTO tag (tag_id, name) VALUES (12, 'cellphone');
+INSERT INTO tag (tag_id, name) VALUES (13, 'church');
+INSERT INTO tag (tag_id, name) VALUES (14, 'cine');
+INSERT INTO tag (tag_id, name) VALUES (15, 'clothing');
+INSERT INTO tag (tag_id, name) VALUES (16, 'coupon');
+INSERT INTO tag (tag_id, name) VALUES (17, 'course');
+INSERT INTO tag (tag_id, name) VALUES (18, 'creditcard');
+INSERT INTO tag (tag_id, name) VALUES (19, 'diezmo');
+INSERT INTO tag (tag_id, name) VALUES (20, 'drone');
+INSERT INTO tag (tag_id, name) VALUES (21, 'electricity');
+INSERT INTO tag (tag_id, name) VALUES (22, 'flight');
+INSERT INTO tag (tag_id, name) VALUES (23, 'food');
+INSERT INTO tag (tag_id, name) VALUES (24, 'freelancer');
+INSERT INTO tag (tag_id, name) VALUES (25, 'friends');
+INSERT INTO tag (tag_id, name) VALUES (26, 'gadget');
+INSERT INTO tag (tag_id, name) VALUES (27, 'games');
+INSERT INTO tag (tag_id, name) VALUES (28, 'gas');
+INSERT INTO tag (tag_id, name) VALUES (29, 'gearbest');
+INSERT INTO tag (tag_id, name) VALUES (30, 'getcash');
+INSERT INTO tag (tag_id, name) VALUES (31, 'gift');
+INSERT INTO tag (tag_id, name) VALUES (32, 'groceries');
+INSERT INTO tag (tag_id, name) VALUES (33, 'hosting');
+INSERT INTO tag (tag_id, name) VALUES (34, 'kindle');
+INSERT INTO tag (tag_id, name) VALUES (35, 'license');
+INSERT INTO tag (tag_id, name) VALUES (36, 'love');
+INSERT INTO tag (tag_id, name) VALUES (37, 'mail');
+INSERT INTO tag (tag_id, name) VALUES (38, 'massage');
+INSERT INTO tag (tag_id, name) VALUES (39, 'master');
+INSERT INTO tag (tag_id, name) VALUES (40, 'outsourcing');
+INSERT INTO tag (tag_id, name) VALUES (41, 'papajohns');
+INSERT INTO tag (tag_id, name) VALUES (42, 'parents');
+INSERT INTO tag (tag_id, name) VALUES (43, 'paycard');
+INSERT INTO tag (tag_id, name) VALUES (44, 'pet');
+INSERT INTO tag (tag_id, name) VALUES (45, 'pizzahut');
+INSERT INTO tag (tag_id, name) VALUES (46, 'pool');
+INSERT INTO tag (tag_id, name) VALUES (47, 'repairs');
+INSERT INTO tag (tag_id, name) VALUES (48, 'running');
+INSERT INTO tag (tag_id, name) VALUES (49, 'salary');
+INSERT INTO tag (tag_id, name) VALUES (50, 'shipping');
+INSERT INTO tag (tag_id, name) VALUES (51, 'shoes');
+INSERT INTO tag (tag_id, name) VALUES (52, 'soccer');
+INSERT INTO tag (tag_id, name) VALUES (53, 'socks');
+INSERT INTO tag (tag_id, name) VALUES (54, 'sports');
+INSERT INTO tag (tag_id, name) VALUES (55, 'teeth');
+INSERT INTO tag (tag_id, name) VALUES (56, 'townhall');
+INSERT INTO tag (tag_id, name) VALUES (57, 'toys');
+INSERT INTO tag (tag_id, name) VALUES (58, 'udemy');
+INSERT INTO tag (tag_id, name) VALUES (59, 'usedstuff');
+INSERT INTO tag (tag_id, name) VALUES (60, 'website');
+INSERT INTO tag (tag_id, name) VALUES (61, 'work');
 
 
 --
@@ -852,18 +849,18 @@ INSERT INTO public.tag (tag_id, name) VALUES (61, 'work');
 -- Data for Name: transaction; Type: TABLE DATA; Schema: public; Owner: smmmusr
 --
 
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (2, 1, 14, NULL, '$23.50', '2018-04-07 08:59:35.82-06', 0, 0, 2, NULL, 'Test transaction');
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (11, 2, 1, NULL, '$45.00', '2018-04-07 08:59:35.82-06', 0, 0, 2, NULL, NULL);
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (12, 2, 2, NULL, '$55.00', '2018-04-07 08:59:35.82-06', 0, 0, 2, NULL, NULL);
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (13, 2, 2, NULL, '$456.00', '2018-04-22 00:00:00-06', 0, 0, 2, NULL, NULL);
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (14, 2, 2, NULL, '$111.00', '2018-03-29 00:00:00-06', 0, 0, 2, NULL, NULL);
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (15, 2, 2, NULL, '$111.00', '2018-03-29 00:00:00-06', 0, 0, 2, NULL, NULL);
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (16, 2, 6, NULL, '$120.00', '2018-04-19 15:00:00-06', 0, 0, 5, NULL, NULL);
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (18, 3, 5, NULL, '$450.00', '2018-04-04 13:48:00-06', 0, 0, 2, 5, NULL);
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (19, 2, 7, NULL, '$15.03', '2018-04-09 20:34:32.636-06', 0, 0, 7, NULL, 'Donkeys, 50% off');
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (20, 2, 4, NULL, '$45.00', '2018-04-10 05:52:06.9-06', 0, 0, 2, NULL, 'Donacion a algo');
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (21, 2, 4, NULL, '$34.00', '2018-04-10 05:53:35.924-06', 0, 0, 5, NULL, 'dona');
-INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (22, 2, 5, NULL, '$356.00', '2018-04-10 05:54:14.388-06', 0, 0, 7, NULL, 'onda');
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (2, 1, 14, NULL, '$23.50', '2018-04-07 08:59:35.82-06', 0, 0, 2, NULL, 'Test transaction');
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (11, 2, 1, NULL, '$45.00', '2018-04-07 08:59:35.82-06', 0, 0, 2, NULL, NULL);
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (12, 2, 2, NULL, '$55.00', '2018-04-07 08:59:35.82-06', 0, 0, 2, NULL, NULL);
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (13, 2, 2, NULL, '$456.00', '2018-04-22 00:00:00-06', 0, 0, 2, NULL, NULL);
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (14, 2, 2, NULL, '$111.00', '2018-03-29 00:00:00-06', 0, 0, 2, NULL, NULL);
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (15, 2, 2, NULL, '$111.00', '2018-03-29 00:00:00-06', 0, 0, 2, NULL, NULL);
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (16, 2, 6, NULL, '$120.00', '2018-04-19 15:00:00-06', 0, 0, 5, NULL, NULL);
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (18, 3, 5, NULL, '$450.00', '2018-04-04 13:48:00-06', 0, 0, 2, 5, NULL);
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (19, 2, 7, NULL, '$15.03', '2018-04-09 20:34:32.636-06', 0, 0, 7, NULL, 'Donkeys, 50% off');
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (20, 2, 4, NULL, '$45.00', '2018-04-10 05:52:06.9-06', 0, 0, 2, NULL, 'Donacion a algo');
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (21, 2, 4, NULL, '$34.00', '2018-04-10 05:53:35.924-06', 0, 0, 5, NULL, 'dona');
+INSERT INTO transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, date_time, is_draft, is_important, from_account, to_account, notes) VALUES (22, 2, 5, NULL, '$356.00', '2018-04-10 05:54:14.388-06', 0, 0, 7, NULL, 'onda');
 
 
 --
@@ -880,10 +877,10 @@ INSERT INTO public.transaction (txn_id, txntyp_id, cat_id, schtxn_id, amount, da
 -- Data for Name: transaction_type; Type: TABLE DATA; Schema: public; Owner: smmmusr
 --
 
-INSERT INTO public.transaction_type (txntyp_id, name, operation) VALUES (1, 'Income', '+');
-INSERT INTO public.transaction_type (txntyp_id, name, operation) VALUES (2, 'Expense', '-');
-INSERT INTO public.transaction_type (txntyp_id, name, operation) VALUES (3, 'Own transfer', '=');
-INSERT INTO public.transaction_type (txntyp_id, name, operation) VALUES (4, 'External transfer', '-');
+INSERT INTO transaction_type (txntyp_id, name, operation) VALUES (1, 'Income', '+');
+INSERT INTO transaction_type (txntyp_id, name, operation) VALUES (2, 'Expense', '-');
+INSERT INTO transaction_type (txntyp_id, name, operation) VALUES (3, 'Own transfer', '=');
+INSERT INTO transaction_type (txntyp_id, name, operation) VALUES (4, 'External transfer', '-');
 
 
 --
@@ -892,7 +889,7 @@ INSERT INTO public.transaction_type (txntyp_id, name, operation) VALUES (4, 'Ext
 -- Name: BANK_bank_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public."BANK_bank_id_seq"', 8, true);
+SELECT pg_catalog.setval('"BANK_bank_id_seq"', 8, true);
 
 
 --
@@ -901,7 +898,7 @@ SELECT pg_catalog.setval('public."BANK_bank_id_seq"', 8, true);
 -- Name: CATEGORY_ICON_catico_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public."CATEGORY_ICON_catico_id_seq"', 1, false);
+SELECT pg_catalog.setval('"CATEGORY_ICON_catico_id_seq"', 1, false);
 
 
 --
@@ -910,7 +907,7 @@ SELECT pg_catalog.setval('public."CATEGORY_ICON_catico_id_seq"', 1, false);
 -- Name: CATEGORY_cat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public."CATEGORY_cat_id_seq"', 20, true);
+SELECT pg_catalog.setval('"CATEGORY_cat_id_seq"', 20, true);
 
 
 --
@@ -919,7 +916,7 @@ SELECT pg_catalog.setval('public."CATEGORY_cat_id_seq"', 20, true);
 -- Name: account_acct_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public.account_acct_id_seq', 11, true);
+SELECT pg_catalog.setval('account_acct_id_seq', 11, true);
 
 
 --
@@ -928,7 +925,7 @@ SELECT pg_catalog.setval('public.account_acct_id_seq', 11, true);
 -- Name: account_type_acctyp_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public.account_type_acctyp_id_seq', 4, true);
+SELECT pg_catalog.setval('account_type_acctyp_id_seq', 4, true);
 
 
 --
@@ -937,7 +934,7 @@ SELECT pg_catalog.setval('public.account_type_acctyp_id_seq', 4, true);
 -- Name: business_bsinss_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public.business_bsinss_id_seq', 1, false);
+SELECT pg_catalog.setval('business_bsinss_id_seq', 1, false);
 
 
 --
@@ -946,7 +943,7 @@ SELECT pg_catalog.setval('public.business_bsinss_id_seq', 1, false);
 -- Name: schedule_txn_schtxn_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public.schedule_txn_schtxn_id_seq', 1, false);
+SELECT pg_catalog.setval('schedule_txn_schtxn_id_seq', 1, false);
 
 
 --
@@ -955,7 +952,7 @@ SELECT pg_catalog.setval('public.schedule_txn_schtxn_id_seq', 1, false);
 -- Name: tag_tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public.tag_tag_id_seq', 62, true);
+SELECT pg_catalog.setval('tag_tag_id_seq', 62, true);
 
 
 --
@@ -964,7 +961,7 @@ SELECT pg_catalog.setval('public.tag_tag_id_seq', 62, true);
 -- Name: transaction_tag_txntag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public.transaction_tag_txntag_id_seq', 1, false);
+SELECT pg_catalog.setval('transaction_tag_txntag_id_seq', 1, false);
 
 
 --
@@ -973,7 +970,7 @@ SELECT pg_catalog.setval('public.transaction_tag_txntag_id_seq', 1, false);
 -- Name: transaction_txn_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public.transaction_txn_id_seq', 22, true);
+SELECT pg_catalog.setval('transaction_txn_id_seq', 22, true);
 
 
 --
@@ -982,7 +979,7 @@ SELECT pg_catalog.setval('public.transaction_txn_id_seq', 22, true);
 -- Name: transaction_type_txntyp_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smmmusr
 --
 
-SELECT pg_catalog.setval('public.transaction_type_txntyp_id_seq', 4, true);
+SELECT pg_catalog.setval('transaction_type_txntyp_id_seq', 4, true);
 
 
 --
@@ -990,7 +987,7 @@ SELECT pg_catalog.setval('public.transaction_type_txntyp_id_seq', 4, true);
 -- Name: account account_name_uk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.account
+ALTER TABLE ONLY account
     ADD CONSTRAINT account_name_uk UNIQUE (name);
 
 
@@ -999,7 +996,7 @@ ALTER TABLE ONLY public.account
 -- Name: account account_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.account
+ALTER TABLE ONLY account
     ADD CONSTRAINT account_pk PRIMARY KEY (acct_id);
 
 
@@ -1008,7 +1005,7 @@ ALTER TABLE ONLY public.account
 -- Name: account_type account_type_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.account_type
+ALTER TABLE ONLY account_type
     ADD CONSTRAINT account_type_pk PRIMARY KEY (acctyp_id);
 
 
@@ -1017,7 +1014,7 @@ ALTER TABLE ONLY public.account_type
 -- Name: bank bank_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.bank
+ALTER TABLE ONLY bank
     ADD CONSTRAINT bank_pk PRIMARY KEY (bank_id);
 
 
@@ -1026,7 +1023,7 @@ ALTER TABLE ONLY public.bank
 -- Name: business business_pkey; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.business
+ALTER TABLE ONLY business
     ADD CONSTRAINT business_pkey PRIMARY KEY (bsinss_id);
 
 
@@ -1035,7 +1032,7 @@ ALTER TABLE ONLY public.business
 -- Name: category_icon category_icon_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.category_icon
+ALTER TABLE ONLY category_icon
     ADD CONSTRAINT category_icon_pk PRIMARY KEY (catico_id);
 
 
@@ -1044,7 +1041,7 @@ ALTER TABLE ONLY public.category_icon
 -- Name: category category_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.category
+ALTER TABLE ONLY category
     ADD CONSTRAINT category_pk PRIMARY KEY (cat_id);
 
 
@@ -1053,7 +1050,7 @@ ALTER TABLE ONLY public.category
 -- Name: category catnameunique; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.category
+ALTER TABLE ONLY category
     ADD CONSTRAINT catnameunique UNIQUE (name);
 
 
@@ -1062,7 +1059,7 @@ ALTER TABLE ONLY public.category
 -- Name: schedule_txn schedule_txn_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.schedule_txn
+ALTER TABLE ONLY schedule_txn
     ADD CONSTRAINT schedule_txn_pk PRIMARY KEY (schtxn_id);
 
 
@@ -1071,7 +1068,7 @@ ALTER TABLE ONLY public.schedule_txn
 -- Name: tag tag_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.tag
+ALTER TABLE ONLY tag
     ADD CONSTRAINT tag_pk PRIMARY KEY (tag_id);
 
 
@@ -1080,7 +1077,7 @@ ALTER TABLE ONLY public.tag
 -- Name: tag tagunique; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.tag
+ALTER TABLE ONLY tag
     ADD CONSTRAINT tagunique UNIQUE (name);
 
 
@@ -1089,7 +1086,7 @@ ALTER TABLE ONLY public.tag
 -- Name: transaction transaction_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction
+ALTER TABLE ONLY transaction
     ADD CONSTRAINT transaction_pk PRIMARY KEY (txn_id);
 
 
@@ -1098,7 +1095,7 @@ ALTER TABLE ONLY public.transaction
 -- Name: transaction_tag transaction_tag_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction_tag
+ALTER TABLE ONLY transaction_tag
     ADD CONSTRAINT transaction_tag_pk PRIMARY KEY (txntag_id);
 
 
@@ -1107,7 +1104,7 @@ ALTER TABLE ONLY public.transaction_tag
 -- Name: transaction_type transaction_type_pk; Type: CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction_type
+ALTER TABLE ONLY transaction_type
     ADD CONSTRAINT transaction_type_pk PRIMARY KEY (txntyp_id);
 
 
@@ -1116,8 +1113,8 @@ ALTER TABLE ONLY public.transaction_type
 -- Name: account account_account_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.account
-    ADD CONSTRAINT account_account_type_fk FOREIGN KEY (acctyp_id) REFERENCES public.account_type(acctyp_id);
+ALTER TABLE ONLY account
+    ADD CONSTRAINT account_account_type_fk FOREIGN KEY (acctyp_id) REFERENCES account_type(acctyp_id);
 
 
 --
@@ -1125,8 +1122,8 @@ ALTER TABLE ONLY public.account
 -- Name: account account_bank_fk; Type: FK CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.account
-    ADD CONSTRAINT account_bank_fk FOREIGN KEY (bank_id) REFERENCES public.bank(bank_id);
+ALTER TABLE ONLY account
+    ADD CONSTRAINT account_bank_fk FOREIGN KEY (bank_id) REFERENCES bank(bank_id);
 
 
 --
@@ -1134,8 +1131,8 @@ ALTER TABLE ONLY public.account
 -- Name: category category_icon_fk; Type: FK CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.category
-    ADD CONSTRAINT category_icon_fk FOREIGN KEY (catico_id) REFERENCES public.category_icon(catico_id);
+ALTER TABLE ONLY category
+    ADD CONSTRAINT category_icon_fk FOREIGN KEY (catico_id) REFERENCES category_icon(catico_id);
 
 
 --
@@ -1143,8 +1140,8 @@ ALTER TABLE ONLY public.category
 -- Name: transaction transaction_category_fk; Type: FK CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction
-    ADD CONSTRAINT transaction_category_fk FOREIGN KEY (cat_id) REFERENCES public.category(cat_id);
+ALTER TABLE ONLY transaction
+    ADD CONSTRAINT transaction_category_fk FOREIGN KEY (cat_id) REFERENCES category(cat_id);
 
 
 --
@@ -1152,8 +1149,8 @@ ALTER TABLE ONLY public.transaction
 -- Name: transaction transaction_schedule_txn_fk; Type: FK CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction
-    ADD CONSTRAINT transaction_schedule_txn_fk FOREIGN KEY (schtxn_id) REFERENCES public.schedule_txn(schtxn_id);
+ALTER TABLE ONLY transaction
+    ADD CONSTRAINT transaction_schedule_txn_fk FOREIGN KEY (schtxn_id) REFERENCES schedule_txn(schtxn_id);
 
 
 --
@@ -1161,8 +1158,8 @@ ALTER TABLE ONLY public.transaction
 -- Name: transaction_tag transaction_tag_transaction_fk; Type: FK CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction_tag
-    ADD CONSTRAINT transaction_tag_transaction_fk FOREIGN KEY (txn_id) REFERENCES public.transaction(txn_id);
+ALTER TABLE ONLY transaction_tag
+    ADD CONSTRAINT transaction_tag_transaction_fk FOREIGN KEY (txn_id) REFERENCES transaction(txn_id);
 
 
 --
@@ -1170,8 +1167,8 @@ ALTER TABLE ONLY public.transaction_tag
 -- Name: transaction transaction_transaction_type_fk; Type: FK CONSTRAINT; Schema: public; Owner: smmmusr
 --
 
-ALTER TABLE ONLY public.transaction
-    ADD CONSTRAINT transaction_transaction_type_fk FOREIGN KEY (txntyp_id) REFERENCES public.transaction_type(txntyp_id);
+ALTER TABLE ONLY transaction
+    ADD CONSTRAINT transaction_transaction_type_fk FOREIGN KEY (txntyp_id) REFERENCES transaction_type(txntyp_id);
 
 
 --
