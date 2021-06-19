@@ -9,3 +9,7 @@ services:
         POSTGRES_USER: money
         POSTGRES_DB: my-money
         PGDATA: /var/lib/postgresql/data/pgdata
+  redis:
+    image: "redis:alpine3.13"
+    ports:
+      - 6379:6379

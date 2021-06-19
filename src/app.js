@@ -5,6 +5,8 @@ const bodyparser = require('koa-bodyparser');
 const koaJwt = require('koa-jwt');
 const { v4: uuid } = require('uuid');
 const pino = require('koa-pino-logger')();
+const redis = require("redis");
+const { promisify } = require("util");
 
 const router = require('./routes');
 
@@ -13,10 +15,18 @@ const JWT_SECRET = process.env.JWT_SECRET ? process.env.JWT_SECRET : 'do_the_del
 
 const app = new Koa();
 
+const redisClient = redis.createClient();
+
+const redisMethods = {
+    get: promisify(redisClient.get).bind(redisClient),
+    set: promisify(redisClient.set).bind(redisClient),
+};
+
 app.context.db = require('./db');
+app.context.redis = redisMethods;
 
 app.use(pino);
-app.use(cors({ origin: process.env.ALLOWED_ORIGINS }));
+app.use(cors({ origin: process.env.ALLOWED_ORIGINS, maxAge: 86400 }));
 
 app.use(async (ctx, next) => {
     const startTime = Date.now();

@@ -1,7 +1,13 @@
 
 module.exports = (router) => {
     router.get('/categories', async (ctx, next) => {
-        ctx.body = await ctx.db('category');
+        let categories = JSON.parse(await ctx.redis.get('categories'));
+
+        if (!categories) {
+            categories = await ctx.db('category');
+            ctx.redis.set('categories', JSON.stringify(categories), 'EX', 60 * 24 * 24);
+        }
+        ctx.body = categories;
         next();
     });
 
@@ -10,15 +16,6 @@ module.exports = (router) => {
 
         const category = await ctx.db('category').where('id', categoryId).first();
         ctx.body = category;
-
-        next();
-    });
-
-    router.delete('/DISABLED/categories/:categoryId', async (ctx, next) => {
-        const { categoryId } = ctx.params;
-        const transactionRef = db.collection('categories').doc(categoryId);
-        const res = await transactionRef.delete();
-        ctx.body = { message: 'Success', details: res };
 
         next();
     });
